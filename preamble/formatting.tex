@@ -1,0 +1,20 @@
+\usepackage{geometry}           % Paket für Änderung der Seitenränder
+\usepackage{setspace}           % Paket für Zeilenabstand 
+\spacing{1.25}                  % Zeilenabstand setzen
+\geometry{a4paper,left=20mm,right=20mm, top=20mm, bottom=20mm, headsep=7mm}
+\raggedbottom{}
+\usepackage{microtype}
+
+% Subsection numbering depth
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+
+\usepackage{titling}
+\usepackage{subcaption}         % Replacement for subfig package which is broken
+\usepackage{url}                % Required \url{}
+
+\usepackage{etoolbox}           % make authblk work with silence package:
+\makeatletter
+\robustify\@latex@warning@no@line{}
+\makeatother
+\usepackage{authblk}
