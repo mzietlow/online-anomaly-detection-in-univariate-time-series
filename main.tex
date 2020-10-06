@@ -1,5 +1,4 @@
-% !TEX TS-program = lualatex
-% !TEX encoding = UTF-8 Unicode
+
 
 % Ignorierte Warnings
 \RequirePackage{silence}
@@ -17,9 +16,11 @@
 \input{preamble/references-and-citation.tex}
 \addbibresource{BibLaTex/citation.bib}
 
-
 % Fonts
 \input{preamble/fonts-and-symbols.tex}
+
+% Scientific Packages
+\input{preamble/scientific.tex}
 
 % Formatting
 \input{preamble/formatting.tex}
@@ -62,8 +63,18 @@
 % \invdefref like defref but inverted
 % \begin{definition} for describing params/variables in a math equation 
 
+% Document Dimensions
+\spacing{1.25}
+\geometry{a4paper,left=20mm,right=20mm, top=20mm, bottom=20mm, headsep=7mm}
+\raggedbottom{}
+
+% Subsection numbering depth
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+
 % Metadaten %
-\title{\LaTeX{} Template}
+\title{Univariate Time Series Anomaly Detection}
+\subtitle{A Comparison of Approaches}
 \author[]{Malte Zietlow}
 \affil[]{
   Department of Computer Science \\
