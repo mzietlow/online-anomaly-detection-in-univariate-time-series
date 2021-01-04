@@ -216,6 +216,7 @@
         "citecolor",
         "deletekeywords",
         "escapeinside",
+        "evergrowing",
         "extendedchars",
         "fullflexible",
         "ifxliterate",
@@ -236,7 +237,7 @@
         "tabsize",
         "textunderscore",
         "upscaling",
-        "urlcolor",
+        "urlcolor"
     ],
     "cSpell.language": "en", // cspell:de requires an npm package: use google
     "ltex.language": "en"

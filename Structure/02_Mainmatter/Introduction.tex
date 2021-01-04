@@ -1,2 +1,24 @@
 \section{Introduction}
-\blindtext[2]
+It is not new that companies are using an evergrowing set of computer systems
+to keep their services online. Monitoring teams are challenged to identify, fix,
+and prevent breakages to these systems. This involves analysis of continuous
+streams of system-health data, made up of e.g.\ natural language logs, hits per
+minute, or system loads like CPU and RAM\@. While breakages often manifest visibly
+to the human spectator in the related system-health data, it is impossible to spectate
+millions of data streams as often produced in larger companies~\cite[cf.][]{Zhu.2017}.
+
+To alleviate this complexity, anomaly detection algorithms are introduced
+which automate the detection of such system issues. The domain of anomaly detection,
+however, is frequently evolving and it is unclear, which algorithm to choose.
+
+In this paper, a number of algorithms is evaluated and compared using the
+\gls{nab}-dataset, consisting of more than 100 unrelated time series.
+
+The paper is organized as follows. In \cref{sect:definitions}, explanations for
+time series, anomalies and anomaly detection are found. In \cref{sect:datasets},
+the \gls{nab} dataset is described and also the recent controversy surrounding
+it is discussed. In \cref{sect:algorithms}, the reasoning for algorithm-selection
+is given. In \cref{sect:results-and-discussion}, the used metric is explained
+and the produced results are discussed. Finally in \cref{sect:conclusion}, the
+paper is wrapped up and recommendations on algorithm usage and future work are
+given.

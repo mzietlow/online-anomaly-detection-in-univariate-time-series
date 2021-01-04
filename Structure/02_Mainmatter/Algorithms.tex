@@ -1,4 +1,5 @@
-\section{Algorithmic Overview}
+\section{Algorithms}\label{sect:algorithms}
+\subsection{Selection Process}
 Every algorithm is applied in a streaming fashion. If an algorithm has to be
 learned then it is being learned continuously.
 
@@ -34,16 +35,7 @@ https://github.com/chickenbestlover/RNN-Time-series-Anomaly-Detection
 \paragraph{Matrixprofile-TS}
 https://github.com/target/matrixprofile-ts
 
-\subsection{Time Series Forecasting}
-\subsubsection{Existing Packages}
-\subsection{Best Practices}
-https://github.com/microsoft/forecasting
-\subsection{AR}
-\subsection{MA}
-\subsection{ARMA}
-\subsection{ARIMA}
-\subsection{SARIMA}
-\subsection{Holt-Winters Exponential Smoothing}
+
 
 Autoregression (AR)
 Moving Average (MA)
@@ -64,17 +56,6 @@ BATS/TBATS: Combination of Fourier terms, exponential smoothing models, and Box-
 Skyline allows for minute configuration. To receive comparable results, we adopt
 the parameters used in \gls{nab}, where Skyline ranked third of eleven methods.
 
-
-
-
-\section{Metrics}
-\subsection{NAB}
-\subsection{F1}
-\subsection{AUC}
-\section{Helpful tools}
-\subsection{plot juggler}r
-https://github.com/facontidavide/PlotJuggler
-
 Curation from:
 \begin{itemize}
     \item \url{https://github.com/cuge1995/awesome-time-series}
@@ -86,6 +67,8 @@ Curation from:
     \item \url{https://www.kaggle.com/general/185462}
 \end{itemize}
 
+
+% Packages for anomaly detection
 \begin{table}[h]\centering
     \ra{1.3}
     \resizebox{\textwidth}{!}{%
@@ -111,7 +94,7 @@ Curation from:
 \end{table}
 
 
-
+% Packages for forecasting
 \begin{table}[h]\centering
     \ra{1.3}
     \resizebox{\textwidth}{!}{%
@@ -133,6 +116,7 @@ Curation from:
     \caption{Forecasting Packages}\label{tab:forecasting-packages}
 \end{table}
 
+% Chosen Packages Anomaly Detection & Forecasting
 \begin{table}[h]\centering
     \ra{1.3}
         \begin{tabular}{l}
@@ -152,6 +136,7 @@ Curation from:
     \caption{Chosen Packages}\label{tab:chosen-packages}
 \end{table}
 
+% Chosen Statistical Methods
 \begin{table}[h]\centering
     \ra{1.3}
         \begin{tabular}{l}
@@ -172,6 +157,7 @@ Curation from:
     \caption{Chosen Statistical Methods}\label{tab:chosen-packages}
 \end{table}
 
+% Chosen ML Methods
 \begin{table}[h]\centering
     \ra{1.3}
         \begin{tabular}{l}
@@ -186,6 +172,7 @@ Curation from:
     \caption{Chosen ML Methods}\label{tab:chosen-packages}
 \end{table}
 
+% Chosen DL Methods
 \begin{table}[h]\centering
     \ra{1.3}
         \begin{tabular}{l}
@@ -206,11 +193,3 @@ Curation from:
         \end{tabular}
     \caption{Chosen Deep Learning Methods}\label{tab:chosen-packages}
 \end{table}
-
-
-
-
-KDD99 KDD Cup 1999 Data, 2007. [Online]. Available:http://kdd.ics.uci.edu/databases/kddcup99/kddcup99.html
-ECG,Spacecraft,Power Demand HOT SAX: Efficiently Finding the Most Unusual Time Series Subsequence
-
-Approach Take Multivariate Dataset -> Do PCA -> Evaluate Univariate. Sneaky.
