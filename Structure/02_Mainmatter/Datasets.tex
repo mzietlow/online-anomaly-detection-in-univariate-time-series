@@ -1,5 +1,14 @@
+\section{Datasets}
+\subsection{Controversy}
+\blindtext[2]
 
+\subsection{Numenta Anomaly Benchmark}
+\blindtext[4]
 
+\subsection{Other Datasets}
+\blindtext[2]
+
+% Table of several univariate datasets
 \begin{table}[h]\centering
     \ra{1.3}
         \begin{tabular}{ll}
@@ -13,12 +22,10 @@
     \caption{Univariate Datasets}\label{tab:datasets}
 \end{table}
 
-
-\section{Datasets}
-
+% Table of several multivariate datasets
 \begin{table}[h]\centering
     \ra{1.3}
-        \begin{tabular}{l}
+        \begin{tabular}{ll}
             Dataset                                                                                                                             & Evaluation    \\\midrule
             \href{https://www.kaggle.com/anomalydetectionml/features}{Data from: Machine Learning-based Anomaly Detection in Software Systems}  & Rejected. Too complex.              \\\addlinespace
             \href{https://github.com/ricardovvargas/3w_dataset}{3W Dataset}                                                                     & \makecell[l]{Rejected.\\Preprocessing and dimensionality reduction were too time-consuming.}              \\\addlinespace
@@ -32,10 +39,10 @@
 \end{table}
 https://datasetsearch.research.google.com/search?query=time%20series%20anomaly%20detection
 
-
+% Table of chosen Datasets
 \begin{table}[h]\centering
     \ra{1.3}
-        \begin{tabular}{l}
+        \begin{tabular}{ll}
             Dataset                                                                                                                             & Amount of time series'\\\midrule
             \href{https://github.com/numenta/NAB}{Numenta Anomaly Benchmark}                                                                    &  59   \\\addlinespace
             \href{https://www.kaggle.com/averkij/tennessee-eastman-process-simulation-dataset}{Tennessee Eastman Process Simulation Dataset}    &  1    \\\addlinespace
@@ -68,7 +75,7 @@ but are nevertheless considered interesting for evaluating CPD algorithms due to
 as seasonality or outliers.
 A total of 37 real time series were collected for the change point data set. This includes 33
 univariate and 4 multivariate series (with either 2 or 4 dimensions). One of the univariate time
-series (uk_coal_employ, Figure 37 in Appendix C) has two missing observations, and nine other
+series (uk\_coal\_employ, Figure 37 in Appendix C) has two missing observations, and nine other
 series show seasonal patterns. Unbeknownst to the annotators we added 5 simulated “quality
 control” series with known change points in the data set, which allows us to evaluate the quality
 of the annotators in situ (see below). Four of these series have a change point with a shift in the
