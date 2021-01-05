@@ -1,0 +1,6 @@
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5 A2Benchmark.synthetic15\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5 A2Benchmark.synthetic11\\E$"}
+{"rule":"WORD_CONTAINS_UNDERSCORE","sentence":"^\\QPoint anomalies from Gasoil-Dataset, 48_Lev_corr_Temp_fault_seed_199_vars_23[\"RT_level\"].\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5: A2Benchmark.synthetic15.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5: A2Benchmark.synthetic11.\\E$"}
+{"rule":"NO_SPACE_CLOSING_QUOTE","sentence":"^\\QPoint anomalies from Gasoil-Dataset: 48LevcorrTempfaultseed199vars23[”RTlevel´´.\\E$"}

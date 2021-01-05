@@ -32,9 +32,18 @@
 % </ References to Definitions >
 
 % Math Equation Parameter description environment:
+% inspired by: https://tex.stackexchange.com/questions/95838/how-to-write-a-perfect-equation-parameters-description/95841
 \newenvironment{conditions}
   {\par\vspace{\abovedisplayskip}\noindent
    \tabularx{\columnwidth}{>{\(}l<{\)} @{}>{\({}}c<{{}\)}@{} >{\raggedright\arraybackslash}X}}
   {\endtabularx\par\vspace{\belowdisplayskip}}
+
+% Example for conditions:
+% ...where:
+% \begin{conditions}
+%   P     & =       &  notional permeability factor \\
+%   N     & \sim    &  number of waves \\
+%   S_{d} & \propto &  damage level
+% \end{conditions}
 
 %%%%% /Custom Commands %%%%%
