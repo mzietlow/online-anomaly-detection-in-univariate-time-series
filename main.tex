@@ -1,9 +1,8 @@
-
-
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
 % Ignorierte Warnings
 \RequirePackage{silence}
-
-\documentclass[11pt,oneside,numbers=noenddot,a4paper,titlepage,abstract]{scrartcl}
+\documentclass[11pt,oneside,numbers=noenddot,a4paper,titlepage,abstract,parskip=half+]{scrartcl}
 % debugging
 % \usepackage{lua-visual-debug}   % Visualize spacing around text and objects
 % \usepackage{endfloat}           % Move all floats/images etc. into backmatter
@@ -65,11 +64,11 @@
 % \parref for referencing paragraphs
 % \defref for referencing math-definitons
 % \invdefref like defref but inverted
-% \begin{definition} for describing params/variables in a math equation 
+% \begin{conditions} for describing params/variables in a math equation 
 
 % Document Dimensions
 \spacing{1.25}
-\geometry{a4paper,left=20mm,right=20mm, top=20mm, bottom=20mm, headsep=7mm}
+\geometry{a4paper,margin=20mm, bottom=30mm, footskip=10mm}
 \raggedbottom{}
 
 % Subsection numbering depth
@@ -79,22 +78,28 @@
 % Metadaten %
 \title{Online Anomaly Detection in Unlabeled Univariate Time Series Data}
 \subtitle{A Comparison of Approaches}
-\author[]{Malte Zietlow}
+\author[]{Martrikelnr.\ 8323}
 \affil[]{
   Department of Computer Science \\
   Nordakademie \\
   Köllner Chaussee 11\\ 
   25337 Elmshorn}
-\affil[]{\textit{\{malte.zietlow\}@nordakademie.de}}
+\affil[]{\textit{\{16103\}@nordakademie.de}}
 
 \date{\today}
 \makeglossaries{}             % makeglossaries <document-root ohne .tex> per cmd
+
+%%% Counter to remember page number %%%
+\newcounter{roman-pagenumber}
 
 \begin{document}
 \input{Structure/GlossarMetadaten}
 
 %%%% Frontmatter %%%%
+\pagenumbering{gobble} % No page numbering for title and abstract
 \maketitle
+\input{Structure/01_Frontmatter/Abstract.tex}
+\pagenumbering{roman} % Roman page numbering for TOC and lists
 {\hypersetup{hidelinks}
   \tableofcontents
   \begingroup
@@ -104,9 +109,11 @@
   \printglossaries{}
   \endgroup
 }
+\setcounter{roman-pagenumber}{\value{page}} % save pagenumber in counter
 
 %%%% Mainmatter %%%%
-\input{Structure/01_Frontmatter/Abstract.tex}
+\clearpage
+\pagenumbering{arabic} % arabic page numbering for mainmatter
 \input{Structure/02_Mainmatter/Introduction.tex}
 \input{Structure/02_Mainmatter/Definitions.tex}
 \input{Structure/02_Mainmatter/Datasets.tex}
@@ -115,6 +122,9 @@
 \input{Structure/02_Mainmatter/Conclusion.tex}
 
 %%%% Backmatter %%%%
+\clearpage
+\pagenumbering{roman} % Continued roman page numbering backmatter
+\setcounter{page}{\value{roman-pagenumber} + 1} % set page number to counter+1
 {
   \hypersetup{hidelinks}
   \printbibliography{}
