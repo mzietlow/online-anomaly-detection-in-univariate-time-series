@@ -17,7 +17,7 @@ log-messages~\cite{Zietlow.2020}) or numerical data.
 To reduce complexity, only univariate streams of numerical data will be considered
 in this paper.
 
-\begin{definition}[Observation]
+\begin{definition}[Observation]\label{def:observation}
     Observations are numerical values observed at a certain point in time.
     Mathematically, it is the tuple given in \cref{eq:observation}
     
@@ -128,20 +128,20 @@ as follows:
     \begin{subfigure}[b]{.45\linewidth}
         \centering
         \includegraphics[width=.6\textwidth]{point_anomalies_yahoo!s5.png}
-        \subcaption{Point anomalies from Yahoo!S5: A2Benchmark.synthetic\_11}\label{fig:point-anomaly}
+        \subcaption{Point anomalies from Yahoo!S5: A2Benchmark.synthetic\_11.}\label{fig:point-anomaly}
     \end{subfigure}%
     \hfill
     \begin{subfigure}[b]{.45\linewidth}
         \centering
         \includegraphics[width=.7\textwidth]{contextual_anomalies_yahoo!s5.png}
-        \subcaption{Contextual anomaly from Yahoo!S5: A2Benchmark.synthetic\_15}\label{fig:contextual-anomaly}
+        \subcaption{Contextual anomaly from Yahoo!S5: A2Benchmark.synthetic\_15.}\label{fig:contextual-anomaly}
     \end{subfigure}\\[1ex]
     \begin{subfigure}[b]{\linewidth}
         \centering
         \includegraphics[width=\textwidth]{collective_anomaly_LevcorrTempfaultseed199vars23.RT_level.jpg}
         \subcaption{Collective anomalies from Gasoil-Dataset~\cite{Filonov.2016}: 48\_Lev\_corr\_Temp\_fault\_seed\_199\_vars\_23[``RT\_level''].}\label{fig:collective-anomaly}
     \end{subfigure}
-    \caption{Illustration of the three anomaly types~\cite{Chandola.2009} from different datasets.}\label{fig:anomaly-types}
+    \caption{Examples of the three anomaly types~\cite{Chandola.2009} from different datasets. Illustrations by the author.}\label{fig:anomaly-types}
 \end{figure}
 
 All common breakage forms are included in one of the three anomaly definitions.
@@ -157,7 +157,7 @@ be presented merely simplified and condensed.
 
 Two major groups of algorithms can be considered: either Forecasting- or
 Boundary-based:
-\begin{definition}[Forecasting-Based]
+\begin{definition}[Forecasting-Based-Algorithm]\label{def:forecasting-based-algo}
     Forecasting-based algorithms consist of two major phases:
     \begin{enumerate}[a.)]
         \item In the first phase, the algorithm tries to predict the next \(n\)-observation
@@ -172,8 +172,13 @@ Boundary-based:
     \end{enumerate}
 \end{definition}
 
-\begin{definition}[Boundary-Based]
+\begin{definition}[Boundary-Based-Algorithm]\label{def:boundary-based-algo}
     Boundary-Based algorithms consist of only a single major phase:
     they try to calculate some boundary to which most observations conform.
     Observations beyond that boundary are deemed anomalous.
+\end{definition}
+
+\begin{definition}[Detection]\label{def:detection}
+    An observation that is deemed anomalous by the algorithm is also called a
+    \text{detection}.
 \end{definition}

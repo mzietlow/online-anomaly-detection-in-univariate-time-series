@@ -8,3 +8,7 @@
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5, nab,\\E$"}
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5, nab, NASA \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, and OMNI \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"A_INFINITIVE","sentence":"^\\QThe nab benchmark.\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QExample of an def:anomaly-window.\\E$"}
+{"rule":"AFFORD_VBG","sentence":"^\\Q1.3 Statistical Method Matrix Profile LOF Robust Covariance Skyline statistical tests like Kolmogorov-Smirnov, Grubbs, Prophet General Additive Model Auto ARIMA TBAT/S Holt-Winters Dynamic AR Dynamic Linear Regression E-/G-/ARCH Polynomial Thresholding Chosen Forecasting Algorithm\\E$"}
+{"rule":"AFFORD_VBG","sentence":"^\\QChosen Forecasting Algorithms\\E$"}
+{"rule":"ENGLISH_WORD_REPEAT_RULE","sentence":"^\\Q1.3 Forecasting Algorithm Prophet General Additive Model Auto ARIMA ARIMA \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q Holt-Winters Dynamic AR E-/G-/ARCH TBAT/S Chosen Forecasting Algorithms\\E$"}
