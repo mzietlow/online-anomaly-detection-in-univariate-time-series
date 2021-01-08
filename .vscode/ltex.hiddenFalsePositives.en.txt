@@ -4,3 +4,7 @@
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5: A2Benchmark.synthetic15.\\E$"}
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5: A2Benchmark.synthetic11.\\E$"}
 {"rule":"NO_SPACE_CLOSING_QUOTE","sentence":"^\\QPoint anomalies from Gasoil-Dataset: 48LevcorrTempfaultseed199vars23[”RTlevel´´.\\E$"}
+{"rule":"A_INFINITIVE","sentence":"^\\QBesides that, recent research has raised doubts about the adequacy of the nab \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5, nab,\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5, nab, NASA \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, and OMNI \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"A_INFINITIVE","sentence":"^\\QThe nab benchmark.\\E$"}
