@@ -2,7 +2,7 @@
 Although theoretical examination is not central to this work, the interested
 reader shall be introduced to the most fundamental concepts in this section.
 
-Namely
+Namely,
 \begin{enumerate*}[a.)]
     \item what is the data structure (time series),
     \item what are we trying to retrieve (anomalies), and
@@ -149,7 +149,7 @@ We therefore try to retrieve all data points which fall under one of the
 \cref{def:point-anomaly,def:contextual-anomaly,def:collective-anomaly}.
 
 
-\subsection{How are we retrieving it?}
+\subsection{How are we retrieving it?}\label{subsect:how-are-we-retrieving-it}
 Retrieval of anomalies as defined in \cref{def:point-anomaly,def:contextual-anomaly,def:collective-anomaly}
 can be done via different paradigms. Extensive taxonomies have been proposed in~\cite{Chandola.2009,Zietlow.2020}.
 Because theoretical examination is not central to this paper, the taxonomy will
@@ -168,8 +168,10 @@ Boundary-based:
         previously recorded error-terms. This is often done via 
         parametric~\cite{Malhotra.2015,Ahmad.2017,Guo.2016,Malhotra.2016,Shipmon.2017,Chauhan.2015} or 
         non-parametric statistical tests~\cite{Zhu.2017,Hundman.2018,Maimo.2018,Su.2019}.
-        For details confer~\cite{Zietlow.2020}.
+        For details confer~\cite{Zietlow.2020}.\label{forecasting-phase-b}
     \end{enumerate}
+    Phase~\ref{forecasting-phase-b} is not part of most forecasting algorithms.
+    For details see \cref{sec:forecasting-eval}.
 \end{definition}
 
 \begin{definition}[Boundary-Based-Algorithm]\label{def:boundary-based-algo}

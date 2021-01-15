@@ -1,3 +1,62 @@
+\section{Details on phase b.) of forecasting-based algorithms}\label{sec:forecasting-eval}
+As noted in \cref{subsect:how-are-we-retrieving-it}, the evaluation of forecasting
+errors is not part of (most) available forecasting packages. Therefore, a variety
+of approaches was adopted for this paper. Most trivially, a moving mean and standard
+deviation were used as a dynamic threshold. Every forecasting error exceeding this
+threshold was remarked as a detection (\cref{def:detection}). Both 
+\begin{enumerate*}
+    \item using an \gls{ocsvm} and 
+    \item identifying the best fitting distribution, then performing p-tests was
+    disregarded for every forecasting error
+\end{enumerate*}
+were disregarded for their computational complexity and subpar results.
+
+More complex scoring methods from \cite{Ahmad.2017,Hundman.2018} were adopted.
+
+\textcite{Ahmad.2017} suggest to model the distribution of errors as a rolling normal
+distribution with mean and standard deviation \(\mu_t, \sigma_t\) according to
+\cref{eq:rolling-mean,eq:rolling-std}
+
+\begin{align}
+    \mu_t&= \frac{\sum_{i=0}^{i=W-1}s_{t-i}}{W}\label{eq:rolling-mean}\\
+    \sigma_t &= \frac{\sum_{i=0}^{i=W-1}{(s_{t-i}-\mu_t)}^2}{W - 1}\label{eq:rolling-std}
+\end{align}
+where:
+\begin{conditions}
+    W &:= & Window size, set to \(W=8000\) as proposed by~\cite{Ahmad.2017}
+\end{conditions}
+
+and a short term rolling average \(\tilde{\mu}_t\) according to \cref{eq:short-rolling-mean}.
+
+\begin{equation}
+    \tilde{\mu}_t = \frac{\sum_{i=0}^{i=W'-1}s_{t-i}}{W'}\label{eq:short-rolling-mean}\\
+\end{equation}
+where:
+\begin{conditions}
+    W' &:= & Short-term window size, set to \(W'=10\) as proposed by~\cite{Ahmad.2017}
+\end{conditions}
+
+The likelihood (\cref{eq:likelihood}is calculated using the \gls{cdf} of a normal gaussian distribution
+given in \cref{eq:cdf}
+as
+\begin{align}
+    L_t &= \text{CDF}\left(\frac{\tilde{\mu}_t - \mu_t}{\sigma_t}\right)\label{eq:likelihood}\\
+    \text{CDF}(x) &= \frac{1}{2} \left(1 + \text{erf}(\frac{x-\mu}{\sqrt{2\sigma}})\right)\label{eq:cdf}
+\end{align}
+where:
+\begin{conditions}
+    \mu&= & 0\\
+    \sigma&= & 1\\
+    \text{erf} &:= & the gaussian error function
+\end{conditions}
+Finally, a detection is recorded, when \(L_t \geq \epsilon \lor L_t \leq 1 - \epsilon\).
+This is a slight deviation from~\cite{Ahmad.2017}, where only an upper p-test is
+performed.
+
+For details on the non-parametric thresholding as per \textcite{Hundman.2018},
+please review their paper.
+
+
 \section{Calculation of the Numenta Anonamly Metric Score}\label{app:numenta-score}
 The Numenta Anomaly Metric Score for a single time series is the addition of
 \begin{enumerate}[a.)]
@@ -69,7 +128,7 @@ This section provides additional time series plots from \gls{nab}.
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/art_load_balancer_spikes.png}
         \subcaption{art\_load\_balancer\_spikes.csv}\label{app-fig:art_load_balancer_spikes}
     \end{subfigure}
-    \caption{Artificial anomaly samples}\label{fig:artificial-anomaly-types}
+    \caption{Artificial anomaly samples}\label{app-fig:artificial-anomaly-types-nab}
 \end{figure}
 % Mean: ec2_cpu_utilization_53ea38 grok_asg_anomaly
 \begin{figure}[htp!]
@@ -84,7 +143,7 @@ This section provides additional time series plots from \gls{nab}.
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/grok_asg_anomaly.png}
         \subcaption{grok\_asg\_anomaly.csv}\label{app-fig:grok_asg_anomaly}
     \end{subfigure}
-    \caption{(\subref{app-fig:ec2_cpu_utilization_53ea38}) shows contextual anomalies, (\subref{app-fig:grok_asg_anomaly}) shows two change points and a point-anomaly.}\label{fig:artificial-anomaly-types}
+    \caption{(\subref{app-fig:ec2_cpu_utilization_53ea38}) shows contextual anomalies, (\subref{app-fig:grok_asg_anomaly}) shows two change points and a point-anomaly.}\label{fig:artificial-anomaly-types-nab}
 \end{figure}
 % Spikes:
 % ec2_cpu_utilization_24ae8d ec2_network_in_5abac7 ec2_request_latency_system_failure elb_request_count_8c0756 Twitter_volume_CRM Twitter_volume_CVS Twitter_volume_KO ambient_temperature_system_failure
@@ -174,7 +233,7 @@ This section provides additional time series plots from \gls{nab}.
     \ra{1.3}
         \begin{tabular}{l}
             Curated List                                                                                    \\\midrule                                                                               
-            \url{https://github.com/cuge1995/awesome-time-series}                                           \\\midrule                                                                               
+            \url{https://github.com/cuge1995/awesome-time-series}                                           \\\addlinespace                                                                               
             \url{https://github.com/xephonhq/awesome-time-series-database}                                  \\\addlinespace
             \url{https://github.com/MaxBenChrist/awesome_time_series_in_python}                             \\\addlinespace
             \url{https://github.com/cuge1995/awesome-time-series}                                           \\\addlinespace
@@ -203,7 +262,7 @@ This section provides additional time series plots from \gls{nab}.
             \href{https://github.com/datamllab/tods}{TODS: Time-series Outlier Detection System}                    & DeepLog~\cite{Du.2017}, Telemanom Matrix Profile, PyOD algorithms                                                                                                                                                                                                                                                                                                                                                             & /         & 5th Jan 2021      & 258   \\\addlinespace
             \href{https://github.com/earthgecko/skyline}{Skyline}                                                   & Ensemble of statistical tests like Kolmogorov-Smirnov, Grubbs, deviation from median\ldots                                                                                                                                                                                                                                                                                                                                    & 2.0       & 22th Dec 2020     & 284   \\\addlinespace
             \href{https://github.com/tsurubee/banpei}{Banpei}                                                       & Hotelling's theory~\cite{Hotelling.1990} and Singular Spectrum Transformation                                                                                                                                                                                                                                                                                                                                                 & /         & 21st Sept 2020    & 222   \\\addlinespace
-            \href{https://github.com/numenta/nupic}{NuPIC}                                                          & Numenta HTM                                                                                                                                                                                                                                                                                                                                                                                                                   & /         & 23 Oct 2019       & 6.2k   \\\addlinespace
+            \href{https://github.com/htm-community/htm.core}{NuPIC}                                                 & Numenta HTM                                                                                                                                                                                                                                                                                                                                                                                                                   & /         & 23 Oct 2019       & 6.2k   \\\addlinespace
             \href{https://github.com/matrix-profile-foundation/matrixprofile}{MPF}                                  & Matrix Profile                                                                                                                                                                                                                                                                                                                                                                                                                & /         & 26th Dec 2020     & 121    \\
         \end{tabular}
     }
@@ -237,39 +296,32 @@ This section provides additional time series plots from \gls{nab}.
 \begin{table}[h]\centering
     \ra{1.3}
         \begin{tabular}{l}
-            Library                                                                                                 \\\midrule
-            \href{https://github.com/datamllab/tods}{TODS: Time-series Outlier Detection System}                    \\\addlinespace
+            Boundary-Libraries \\\midrule
             \href{https://github.com/datamllab/pyodds}{PyODDS} / \href{https://github.com/yzhao062/pyod}{PyOD}      \\\addlinespace
             \href{https://github.com/kLabUM/rrcf}{rrcf}                                                             \\\addlinespace
             \href{https://github.com/earthgecko/skyline}{Skyline}                                                   \\\addlinespace
-            \href{https://github.com/numenta/nupic}{NuPIC}                                                          \\\addlinespace
-            
+            \href{https://github.com/htm-community/htm.core}{NuPIC}                                                 \\\addlinespace\addlinespace
+            Forecasting-Libraries \\\midrule
             \href{https://github.com/awslabs/gluon-ts}{GluonTS}                                                     \\\addlinespace
             \href{https://github.com/firmai/atspy}{AtsPy}                                                           \\\addlinespace
             \href{https://github.com/RJT1990/pyflux}{PyFlux}                                                        \\\addlinespace
             \href{https://github.com/alan-turing-institute/sktime}{sktime}                                          \\\addlinespace
-            \href{https://github.com/LongxingTan/Time-series-prediction}{Time Series Prediction TF2}                \\
         \end{tabular}
     \caption{Chosen Libraries}\label{tab:chosen-packages}
 \end{table}
 
-
-
-
 % Chosen Forecasting Algo
 \begin{table}[h]\centering
     \ra{1.3}
-        \begin{tabular}{l}
-            Forecasting Algorithm                                                     \\\midrule         
-            Prophet General Additive Model                                            \\\addlinespace
-            Auto ARIMA                                                                \\\addlinespace
-            ARIMA~\cite{braei}                                                        \\\addlinespace
-            Holt-Winters                                                              \\\addlinespace
-            NBEATS                                                                    \\\addlinespace
-            Dynamic AR                                                                \\\addlinespace
-            E-/G-/ARCH                                                                \\\addlinespace
-            TBAT/S                                                                    \\\addlinespace
-            DeepAnT                                                                   \\
+        \begin{tabular}{ll}
+            Forecasting Algorithm                                       & Package/Implementation    \\\midrule         
+            Prophet~\cite{Taylor.2017}                                  & \href{https://github.com/firmai/atspy}{AtsPy}             \\\addlinespace
+            Auto ARIMA~\cite{Smith.2017}                                & \href{https://github.com/alkaline-ml/pmdarima}{pmdarima}  \\\addlinespace
+            ARIMA~\cite[Hyperparameters adopted from][]{Braei.2020}     & \href{https://github.com/alkaline-ml/pmdarima}{pmdarima}  \\\addlinespace
+            Holt-Winters~\cite{Winters.1960}                            & \href{https://github.com/firmai/atspy}{AtsPy}             \\\addlinespace
+            N-BEATS~\cite{Oreshkin.2020}                                & Implementation by the author                              \\\addlinespace
+            TBAT/S                                                      & \href{https://github.com/firmai/atspy}{AtsPy}             \\\addlinespace
+            DeepAnT~\cite{Munir.2019}                                   & Implementation by the author                              \\
         \end{tabular}
     \caption{Chosen Forecasting Algorithms}\label{tab:chosen-forecasting-algo}
 \end{table}
@@ -277,26 +329,191 @@ This section provides additional time series plots from \gls{nab}.
 % Chosen Boundary Algo
 \begin{table}[h]\centering
     \ra{1.3}
-        \begin{tabular}{l}
-            Statistical Method                                                        \\\midrule                                                                               
-            LOF                                                                       \\\addlinespace
-            AutoEncoder                                                               \\\addlinespace
-            CBLOF                                                                     \\\addlinespace
-            DAGMM                                                                     \\\addlinespace
-            KNN                                                                       \\\addlinespace
-            Skyline statistical tests like Kolmogorov-Smirnov, Grubbs, \ldots         \\\addlinespace
-            Isolation Forest                                                          \\\addlinespace
-            k-Means                                                                   \\\addlinespace
-            OC-SVM                                                                    \\\addlinespace
-            Robust Random Cut Forest                                                  \\\addlinespace
-            LSTM-AD                                                                   \\\addlinespace
-            LSTM-ED                                                                   \\\addlinespace
-            Numenta HTM                                                               \\
+        \begin{tabular}{ll}
+            Boundary Algorithm                                  & Package/Implementation   \\\midrule                                                                               
+            \gls{lof}~\cite{Breunig.2000}                       & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            Autoencoder~\cite[499\psqq]{Goodfellow.2016}        & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            \gls{cblof}~\cite{He.2003}                          & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            \gls{dagmm}\cite{Zong.2018}                         & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            \gls{knn}~\cite[16\psqq]{Murphy.2012}               & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            Skyline                                             & \href{https://github.com/earthgecko/skyline}{Skyline}                         \\\addlinespace
+            \gls{ocsvm}~\cite{Schölkopf.1999,Tax.2004}          & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            Robust Random Cut Forest~\cite{Bartos.2019}         & \href{https://github.com/kLabUM/rrcf}{rrcf}                                   \\\addlinespace
+            LSTM-AD~\cite{Malhotra.2015}                        & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            LSTM-ED~\cite{Malhotra.2016}                        & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            Numenta Threshold Detector~\cite{Ahmad.2017}        & Implementation by the author / \href{https://github.com/numenta/nupic}{NuPIC} \\\addlinespace
+            Numenta \gls{htm}~\cite{Ahmad.2017}                 & \href{https://github.com/htm-community/htm.core}{Community-HTM}               \\
         \end{tabular}
-    \caption{Chosen Boundary Algorithm}\label{tab:chosen-boundary-algo}
+    \caption{Chosen Boundary Algorithms}\label{tab:chosen-boundary-algo}
 \end{table}
+\clearpage
 
-\todo{cite methods correctly!}
+\section{Illustrations from Algorithms}
 
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/ocsvm/noisy1.png}
+        \subcaption{Output from \gls{ocsvm} seems to lay \textit{boxes} around
+        observations with value \(> 0\). Useless output for the task of anomaly
+        detection.}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/ocsvm/noisy2.png}
+        \subcaption{In this example, \gls{ocsvm} claims every that every 
+        observation is anomalous.}
+    \end{subfigure}
+    \caption{Unusable outputs from \gls{ocsvm}. Blue lines represent observations
+    from the time series. Red lines represent the output from \gls{ocsvm}.
+    Illustration by the author.}\label{fig:ocsvm-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/lof/no_detection.png}
+        \subcaption{Output from \gls{lof}, where no detections are produced on
+        a seemingly simple example. Anomalous time windows are marked red.}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/lof/unreasonable_detection2.png}
+        \subcaption{Example of an unreasonable detection by \gls{lof}.}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/lof/unreasonable_detection3.png}
+        \subcaption{Another example of an unreasonable detection by \gls{lof}.}
+    \end{subfigure}
+    \caption{(Seemingly) unreasonable detections from \gls{lof}. Detections are
+    depicted as colored diamond symbols. Illustration by the author.}\label{fig:lof-output}
+\end{figure}
+
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/dagmm/no_tp.png}
+        \subcaption{False positives from \gls{dagmm}}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/dagmm/lucky_detections.png}
+        \subcaption{A representative true positive from \gls{dagmm}. The
+        reason for the anomaly is the high value spike (inside the red area).
+        \gls{dagmm} (unreasonably) attributes the anomaly to a normal value
+        approximately two days previous.}
+    \end{subfigure}
+    \caption{Examples from \gls{dagmm}.}\label{fig:dagmm-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/rrcf/season1.png}
+        \subcaption{Example detection of a cyclicity violation. True positives
+        are displayed as green- and false positives as red diamonds.}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/rrcf/confused3.png}
+        \subcaption{A representative result from \gls{rrcf}, where a complex
+        time series confuses the algorithm.}
+    \end{subfigure}
+    \caption{Examples from \gls{rrcf}.}\label{fig:rrcf-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/deepant/cyclicity.png}
+        \subcaption{Example detection of a cyclicity violation. True positives
+        are displayed as green- and false positives as red diamonds. The red line
+        shows predictions from DeepAnT, the blue line shows the original time series.}
+    \end{subfigure}\label{fig:deepant-cyclicity}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/deepant/resembles_original2.png}
+        \subcaption{A result from DeepAnT from a time series with regular spikes.
+        The predicted values (red) closely resemble the original values (blue --- 
+        mostly hidden underneath the red predictions).}
+    \end{subfigure}\label{fig:deepant-resemble}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/deepant/changepoint_response.png}
+        \subcaption{DeepAnTs response to multiple changepoints. First, predictions
+        occur mean shifted. However, DeepAnT quickly adapts to the new behavior.}\label{fig:deepant-changepoint}
+    \end{subfigure}
+    \caption{Examples from DeepAnT.}\label{fig:deepant-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/nbeats/lasting_impact.png}
+        \subcaption{Example of a value spike (Jul 23) that decreases prediction
+        accuracy for almost four consecutive day.}
+    \end{subfigure}\label{fig:nbeats-spike-impact}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/nbeats/noisy2.png}
+        \subcaption{An example of N-BEATS' lack of sensitivity to long-term cyclicity}
+    \end{subfigure}\label{fig:nbeats-cyclicity}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/deepant/changepoint_response.png}
+        \subcaption{Like DeepAnT, output from N-BEATS often resembles the original
+        time series.}\label{fig:nbeats-resembles}
+    \end{subfigure}
+    \caption{Examples from N-BEATS.}\label{fig:nbeats-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/hw/broken.png}
+        \subcaption{An example of computational instability from Holt-Winters.}\label{fig:hw-instability}
+    \end{subfigure}\label{fig:hw-broken}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/hw/broken_trend.png}
+        \subcaption{An example of inferred trends from Holt-Winters that are not
+        found within the data.}\label{fig:hw-trend-instability}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/hw/unstable3.png}
+        \subcaption{A more ordinary example from Holt-Winters.}\label{fig:hw-ordinary}
+    \end{subfigure}
+    \caption{Examples from Holt-Winters.}\label{fig:hw-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/khundman/highfp.png}
+        \subcaption{High false positives rate on time series with many spikes.}\label{fig:khundman-fp}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/khundman/success.png}
+        \subcaption{Successful detection of two spikes.}\label{fig:khundman-success}
+    \end{subfigure}
+    \caption{Examples from \gls{ndt}.}\label{fig:khundman-output}
+\end{figure}
 
 \todo{Check if clearpage is still necessary in complete appendix}
+\todo{Remove DOI-Links}

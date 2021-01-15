@@ -1,8 +1,172 @@
 \section{Results and Discussion}\label{sect:results-and-discussion}
-\blindtext[1]
+In this section we will briefly examine the results accomplished by every
+of the 22 algorithms (\cref{tab:chosen-forecasting-algo,tab:chosen-boundary-algo})
+selected for evaluation.
 
-\subsection{NAB-Scores}
-\blindtext[3]
+\bigskip
+{\large\uline{\textbf{Inapplicable Algorithms}}}\\
+An algorithm is considered inapplicable, if it is unable to produce results that
+are hardly usable for anomaly detection.
+\begin{description}[style=unboxed,leftmargin=0cm]
+    \item[TBAT/S] TBAT/S suffered from frequent crashes due to numerical instabilities.
+    In conjunction with its long runtime and subpar performance it was sorted out.
+    \item[OCSVM] \gls{ocsvm}s output is predominantly noisy. In \cref{fig:ocsvm-output},
+    two examples (out of many) are shown in which \gls{ocsvm} was unable to extract
+    meaningful insights from the data. Its output might be improved by adapting
+    the method from e.g.\ \textcite{GomezVerdejo.2011}. However, this is beyond
+    the scope of this paper.
+    \item[LOF] \gls{lof} produced only a low number of detections, most of which
+    (89) were false positives that (visually) seem unreasonable (see \cref{fig:lof-output}).
+    Interestingly, it proved largely resistant to high value spikes.
+    For real-world use however, the number of false negatives is too high.
+    \item[DAGMM] Although \gls{dagmm} was able to produce 32 true positive detections,
+    most of them appear coincidental (see \cref{fig:dagmm-output}) making the 
+    algorithm inadequate.
+    \item[RRCF] While in simple, consistent time series, \gls{rrcf} is able to
+    adept to and detect violations of cyclicity, complex data appears to confuse
+    the method and therefore makes it inadequate in large part. Although grid-search
+    has been performed for hyperparameter optimization, it is possible that
+    results could have been improved.
+\end{description}
+\todo{Predictions from forecasting methods are actually prediction-errors}
+\bigskip
+{\large\uline{\textbf{Intermediate Algorithms}}}\\
+Simply, the set of all (adequate) algorithms \(\not\subset \left\{\text{top-5 algorithms}\right\}\)
+are considered as intermediate.
+\begin{description}[style=unboxed,leftmargin=0cm]
+    \item[DeepAnT] In simple cases, DeepAnT is able to learn cyclicity of the data,
+    and thereby uncover cyclicity violation (see \cref{fig:deepant-cyclicity}). In more complex cases however, the
+    result more closely \textit{reconstructs} it (see \cref{fig:deepant-resemble}).
+    Neither increasing the history window (that is used to predict the upcoming
+    observation) nor increasing the number of training iterations were able to
+    alleviate the problem. An interesting exception from this are change points,
+    where predictions slowly adapt to the new mean of observations (see 
+    \cref{fig:deepant-changepoint}).
+    \item[NBEATS] Other than DeepAnT, NBEATS seem unable to infer cyclicity from
+    the data (see \cref{fig:nbeats-cyclicity}). For more complex time series,
+    NBEATS also resembles the original time series data (see \cref{fig:nbeats-resembles}).
+    Interestingly, value spikes are followed by a short decrease in prediction
+    accuracy (see \cref{fig:nbeats-spike-impact}). The output is therefore often
+    more chaotic than that of DeepAnT. While it may seem counterintuitive, that
+    NBEATS achieves higher scores than DeepAnT, this is related to three conditions:
+    \begin{enumerate*}[a.)]
+        \item as noted, value spikes cause more chaotic outputs,
+        \item many anomalies for the \gls{nab} are point anomalies with high value spikes, and
+        \item Nonparametric Dynamic Thresholding~\cite[cf.][]{Hundman.2018}
+        (see \cref{def:forecasting-based-algo}) is sensitive to relative changes
+        in mean and standard deviation.
+    \end{enumerate*}
+    
+    We therefore observe more detections in total which and these are also more
+    likely to be true positives, because the \gls{nab} contains many such anomalies.
 
-\subsection{Visual Evaluation}
-\blindtext[3]
+    Unfortunately, this comes at the cost of increasing the number of false positives
+    significantly.
+    \item[Holt-Winters] Holt-Winters proved to be even more unstable than N-BEATS,
+    resulting in large prediction spikes (see \cref{fig:hw-broken}). Predictions also
+    often included some trend that was not to be found within the actual data (see
+    \cref{fig:hw-trend-instability}). As Holt-Winters was adopted from AtsPy,
+    it is possible that numerical instabilities resulted from an issue within the library.
+    \item[Nonparametric Dynamic Thresholding~\cite{Hundman.2018}] Although not
+    considered as a stand-alone method at the beginning, \gls{ndt} proved to be
+    very effective at extracting anomalies from forecasting algorithms.
+    
+    As often observed in this section, the output of most forecasting algorithms
+    closely resembles the shape of the ground truth time series.
+    
+    Therefore, \gls{ndt} was added to the set of methods.
+    
+    \gls{ndt} tries to detect values in a dataset that cause the greatest change
+    in mean and standard deviation when they are removed. In theory, it should
+    therefore able to identify regions not only with a high/low value but also
+    with unusually high/low mean. From visual evaluation reacts most strongly to
+    value spikes. In some time series, this leads to a high number of false positives
+    (see \cref{fig:khundman-fp}). Unfortunately, the dataset yields not a single
+    anomaly that is detected by \gls{ndt} due to its unusual mean.
+    \item[LSTM-AD]
+    \item[Auto-ARIMA] 
+    \item[CBLOF] \gls{cblof}s results are subpar and show it was not built for
+    usage with time series data. \gls{cblof} is able to detect observations which
+    strongly deviate from their neighborhood, but thereby also suffers from a high
+    false positive rate. In some scenarios, \gls{cblof} produces a high number of
+    adjacent detections. The \gls{nab}-metric punishes every such detection leading
+    to an even worse score.
+    \item[LSTM-ED] LSTM-ED scored significantly higher than LSTM-AD\@. However,
+    by visual examination, the number of false positives is high. The detector
+    is very sensitive to value spikes. Further, some true positives were only
+    detected, because a value spike appeared shortly after, yet still within
+    the anomaly window.
+    \item[kNN]
+    \item[Prophet] 
+\end{description}
+
+\bigskip
+{\large\uline{\textbf{Successful Algorithms}}}\\
+\begin{description}[style=unboxed,leftmargin=0cm]
+    \item[Threshold Detector] Interestingly, the threshold detector achieves high scores.
+    This shows, that the majority of anomalies in the dataset are point anomalies 
+    that spike higher than all previous observations. It was able to detect
+    71 out of 112 anomalies.
+    \item[Skyline] Skyline was unable to detect cyclicity dropouts. It is robust
+    to frequently spiking domains, as long as the spikes are so common, that
+    they are within a \(\mu_t + 3 \times \sigma_t^2\), where \(\mu_t, \sigma_t^2\) 
+    are the moving mean and the moving standard deviation respectively. If observations
+    deviate more (however regular that may be), a detection is recorded.
+    This produces a significant number of false positives in some domains.
+    \item[Numenta HTM] \gls{htm} was able to score highest out of all algorithms,
+    and slightly higher than Skyline while producing less false positives. It
+    was unable to detect (even visually very obvious) anomalies in highly
+    fluctuating time series, where the height (and thereby mean) of spikes
+    changes. It produced several false positives on datasets where spikes were
+    strong but regular. Furthermore, it is hard to determine a rule, which datasets
+    work and which produce a high number of false positives.
+
+    \item[AutoEncoder] While the autoencoder was able to achieve a good score,
+    evaluating its output visually proved challenging. In frequently spiking
+    domains, it was robust to most spikes. Sometimes too robust. In a time series with a
+    steady square wave however, it seemed to randomly detect observation with a
+    high value spike. Cyclicity dropouts (\cref{app-fig:art_daily_flatmiddle,app-fig:art_daily_jumpsdown})
+    were not detected.
+    
+    An in-depth discussion with carefully picked time series would be required for
+    a better understanding its real-world behavior more. This is beyond the scope
+    of this paper.
+    \item[Ensemble of HTM, Threshold and Autoencoder] Using an ensemble of methods,
+    we are able to reduce the number of false positives to \(FP=7\), while
+    keeping the number of true positives high with \(TP=42\).
+\end{description}
+
+% Chosen Library Anomaly Detection & Forecasting
+\begin{table}[h]\centering
+    \ra{1.3}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{lll|cccc}
+            Boundary Algorithms                                             & Standard Profile  & Punish high FP    & F1      & TP    & FP    & FN    \\\hline
+            Numenta \gls{htm}~\cite{Ahmad.2017}                             & 59.3              & 21.9              & 0.41    & 82    & 153   & 34    \\
+            Skyline                                                         & 57.8              & -6.4              & 0.33    & 87    & 273   & 29    \\
+            Autoencoder~\cite[499\psqq]{Goodfellow.2016}                    & 51.9              & -5                & 0.32    & 80    & 260   & 36    \\
+            Numenta Threshold Detector~\cite{Ahmad.2017}                    & 50.1              & 44.9              & 0.61    & 65    & 19    & 51    \\
+            \gls{knn}~\cite[16\psqq]{Murphy.2012}                           & 47.9              & 17.6              & 0.42    & 68    & 123   & 48    \\
+            LSTM-ED~\cite{Malhotra.2016}                                    & 47.8              & -3.96             & 0.34    & 74    & 211   & 41    \\
+            \gls{cblof}~\cite{He.2003}                                      & 47.7              & 19.6              & 0.43    & 68    & 114   & 48    \\
+            \gls{ndt}~\cite{Hundman.2018}          & 46.2              & 9.69              & 0.42    & 68    & 140   & 48    \\
+            LSTM-AD~\cite{Malhotra.2015}                                    & 36.3              & 17                & 0.44    & 51    & 78    & 65    \\
+            Robust Random Cut Forest~\cite{Bartos.2019}                     & 34.3              & -14               & 0.29    & 54    & 207   & 62    \\
+            \gls{dagmm}\cite{Zong.2018}                                     & 17.9              & -17.1             & 0.26    & 32    & 147   & 84    \\
+            \gls{lof}~\cite{Breunig.2000}                                   & 14.2              & -7.9              & 0.3     & 24    & 89    & 91    \\
+            \acrshort{ocsvm}~\cite{Schölkopf.1999,Tax.2004}                 & 1.2               & -0.5              & 0.25    & 1     & 5     & 115   \\
+            \\
+            Forecasting Algorithm                                           &                   &                   &         &       &       &       \\\hline
+            Prophet~\cite{Taylor.2017}                                      & 48.0              & -26.5             & 0.28    & 78    & 319   & 38    \\
+            Auto-ARIMA~\cite{Smith.2017}                                    & 47.6              & -19.7             & 0.3     & 77    & 287   & 39    \\
+            Holt-Winters (additive model)~\cite{Winters.1960}               & 46.2              & -18.2             & 0.29    & 74    & 281   & 42    \\
+            N-BEATS~\cite{Oreshkin.2020}                                    & 44.7              & -13.6             & 0.29    & 71    & 272   & 45    \\
+            DeepAnT~\cite{Munir.2019}                                       & 36.9              & -2.5              & 0.34    & 57    & 166   & 59    \\
+            TBAT/S                                                          & /                 & /                 & /     & /     & /     & /     \\
+        \end{tabular}
+    }
+    \caption[NAB-Scores achieved by the algorithms]{
+    Left) overview of scores achieved by two \gls{nab}-metric profiles.
+    \\Right) F1-Score~\cite[183]{Murphy.2012}, true positives, false positives
+    and false negatives respectively.}\label{tab:results}
+\end{table}
