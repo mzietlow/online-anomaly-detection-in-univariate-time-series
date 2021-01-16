@@ -2,7 +2,7 @@
 % !TEX encoding = UTF-8 Unicode
 % Ignorierte Warnings
 \RequirePackage{silence}
-\documentclass[11pt,oneside,numbers=noenddot,a4paper,titlepage,abstract,parskip=half+]{scrartcl}
+\documentclass[11pt,oneside,numbers=noenddot,a4paper,titlepage,abstract,bibliography=totocnumbered,parskip=half+]{scrartcl}
 % debugging
 % \usepackage{lua-visual-debug}   % Visualize spacing around text and objects
 % \usepackage{endfloat}           % Move all floats/images etc. into backmatter
@@ -128,7 +128,7 @@
 \setcounter{page}{\value{roman-pagenumber} + 1} % set page number to counter+1
 {
   \hypersetup{hidelinks}
-  \printbibliography{}
+  \printbibliography[title={Bibliography}]
 }
 \appendix
 \input{Structure/03_Backmatter/Appendices.tex}
