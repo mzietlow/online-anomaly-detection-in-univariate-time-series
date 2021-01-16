@@ -143,7 +143,9 @@ This section provides additional time series plots from \gls{nab}.
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/grok_asg_anomaly.png}
         \subcaption{grok\_asg\_anomaly.csv}\label{app-fig:grok_asg_anomaly}
     \end{subfigure}
-    \caption{(\subref{app-fig:ec2_cpu_utilization_53ea38}) shows contextual anomalies, (\subref{app-fig:grok_asg_anomaly}) shows two change points and a point-anomaly.}\label{fig:artificial-anomaly-types-nab}
+    \caption[Contextual anomalies and change points]{(\subref{app-fig:ec2_cpu_utilization_53ea38}) 
+    shows contextual anomalies, (\subref{app-fig:grok_asg_anomaly}) shows two
+    change points and a point-anomaly.}\label{fig:artificial-anomaly-types-nab}
 \end{figure}
 % Spikes:
 % ec2_cpu_utilization_24ae8d ec2_network_in_5abac7 ec2_request_latency_system_failure elb_request_count_8c0756 Twitter_volume_CRM Twitter_volume_CVS Twitter_volume_KO ambient_temperature_system_failure
@@ -348,7 +350,137 @@ This section provides additional time series plots from \gls{nab}.
 \end{table}
 \clearpage
 
-\section{Illustrations from Algorithms}
+\section{Illustrations from Forecasting Algorithms}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/deepant/cyclicity.png}
+        \subcaption{Example detection of a cyclicity violation. True positives
+        are displayed as green- and false positives as red diamonds. The red line
+        shows predictions from DeepAnT, the blue line shows the original time series.}\label{fig:deepant-cyclicity}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/deepant/resembles_original2.png}
+        \subcaption{A result from DeepAnT from a time series with regular spikes.
+        The predicted values (red) closely resemble the original values (blue --- 
+        mostly hidden underneath the red predictions).}\label{fig:deepant-resemble}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[htp!]
+    \ContinuedFloat{}
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/deepant/changepoint_response.png}
+        \subcaption{DeepAnTs response to multiple changepoints. First, predictions
+        occur mean shifted. However, DeepAnT quickly adapts to the new behavior.}\label{fig:deepant-changepoint}
+    \end{subfigure}
+    \caption{Examples from DeepAnT.}\label{fig:deepant-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/nbeats/noisy2.png}
+        \subcaption{An example of N-BEATS' lack of sensitivity to long-term cyclicity}\label{fig:nbeats-cyclicity}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/deepant/changepoint_response.png}
+        \subcaption{Like DeepAnT, output from N-BEATS often resembles the original
+        time series.}\label{fig:nbeats-resembles}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/nbeats/lasting_impact.png}
+        \subcaption{Example of a value spike (Jul 23) that decreases prediction
+        accuracy for almost four consecutive day.}\label{fig:nbeats-spike-impact}
+    \end{subfigure}
+    \caption{Examples from N-BEATS.}\label{fig:nbeats-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/hw/broken.png}
+        \subcaption{An example of computational instability from Holt-Winters.}\label{fig:hw-broken}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/hw/broken_trend.png}
+        \subcaption{An example of inferred trends from Holt-Winters that are not
+        found within the data.}\label{fig:hw-trend-instability}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/hw/unstable3.png}
+        \subcaption{A more ordinary example from Holt-Winters.}\label{fig:hw-ordinary}
+    \end{subfigure}
+    \caption{Examples from Holt-Winters.}\label{fig:hw-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/arima_khundman/high_fp3.png}
+        \subcaption{High false positives rate on time series with many spikes.}\label{fig:arima-fp}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/arima_khundman/cyclicity2.png}
+        \subcaption{ARIMA is unable to adopt long-term cyclicity.}\label{fig:arima-cyclicity}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/arima_khundman/subtle_irregularities_box.png}
+        \subcaption{Time series values are colored blue, while algorithm output
+        is red. The pattern (dotted box) from the time series deviates from previous
+        time steps.}\label{fig:arima-subtle}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[htp!]
+    \ContinuedFloat{}
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/arima_khundman/resembles_output3.png}
+        \subcaption{On more chaotic time series, output from ARIMA closely
+        resembles the original time series.}\label{fig:arima-resembles}
+    \end{subfigure}
+    \caption{Examples from Auto-ARIMA.}\label{fig:arima-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/prophet/high_fp5.png}
+        \subcaption{57 false positives on a single time series.}\label{fig:prophet-fp}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/prophet/noisy_low_fp.png}
+        \subcaption{Prophet often assumed seasonality within the data, producing
+        a curvy output.}\label{fig:prophet-curvy}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/prophet/cyclicity3.png}
+        \subcaption{Successful adaptation to the cyclicity of a simple time series.}\label{fig:prophet-cyclicity}
+    \end{subfigure}
+\caption{Examples from Prophet.}\label{fig:prophet-output}
+\end{figure}
+\clearpage
+
+\section{Illustrations from Boundary Algorithms}
 
 \begin{figure}[htp!]
     \begin{subfigure}[b]{\linewidth}
@@ -383,7 +515,10 @@ This section provides additional time series plots from \gls{nab}.
         \includegraphics[width=.7\textwidth]{evaluation/lof/unreasonable_detection2.png}
         \subcaption{Example of an unreasonable detection by \gls{lof}.}
     \end{subfigure}
-    \\
+\end{figure}
+
+\begin{figure}[htp!]
+    \ContinuedFloat{}
     \begin{subfigure}[b]{\linewidth}
         \centering
         \includegraphics[width=.7\textwidth]{evaluation/lof/unreasonable_detection3.png}
@@ -392,7 +527,6 @@ This section provides additional time series plots from \gls{nab}.
     \caption{(Seemingly) unreasonable detections from \gls{lof}. Detections are
     depicted as colored diamond symbols. Illustration by the author.}\label{fig:lof-output}
 \end{figure}
-
 
 \begin{figure}[htp!]
     \begin{subfigure}[b]{\linewidth}
@@ -432,77 +566,6 @@ This section provides additional time series plots from \gls{nab}.
 \begin{figure}[htp!]
     \begin{subfigure}[b]{\linewidth}
         \centering
-        \includegraphics[width=.7\textwidth]{evaluation/deepant/cyclicity.png}
-        \subcaption{Example detection of a cyclicity violation. True positives
-        are displayed as green- and false positives as red diamonds. The red line
-        shows predictions from DeepAnT, the blue line shows the original time series.}
-    \end{subfigure}\label{fig:deepant-cyclicity}
-    \\
-    \begin{subfigure}[b]{\linewidth}
-        \centering
-        \includegraphics[width=.7\textwidth]{evaluation/deepant/resembles_original2.png}
-        \subcaption{A result from DeepAnT from a time series with regular spikes.
-        The predicted values (red) closely resemble the original values (blue --- 
-        mostly hidden underneath the red predictions).}
-    \end{subfigure}\label{fig:deepant-resemble}
-    \\
-    \begin{subfigure}[b]{\linewidth}
-        \centering
-        \includegraphics[width=.7\textwidth]{evaluation/deepant/changepoint_response.png}
-        \subcaption{DeepAnTs response to multiple changepoints. First, predictions
-        occur mean shifted. However, DeepAnT quickly adapts to the new behavior.}\label{fig:deepant-changepoint}
-    \end{subfigure}
-    \caption{Examples from DeepAnT.}\label{fig:deepant-output}
-\end{figure}
-
-\begin{figure}[htp!]
-    \begin{subfigure}[b]{\linewidth}
-        \centering
-        \includegraphics[width=.7\textwidth]{evaluation/nbeats/lasting_impact.png}
-        \subcaption{Example of a value spike (Jul 23) that decreases prediction
-        accuracy for almost four consecutive day.}
-    \end{subfigure}\label{fig:nbeats-spike-impact}
-    \\
-    \begin{subfigure}[b]{\linewidth}
-        \centering
-        \includegraphics[width=.7\textwidth]{evaluation/nbeats/noisy2.png}
-        \subcaption{An example of N-BEATS' lack of sensitivity to long-term cyclicity}
-    \end{subfigure}\label{fig:nbeats-cyclicity}
-    \\
-    \begin{subfigure}[b]{\linewidth}
-        \centering
-        \includegraphics[width=.7\textwidth]{evaluation/deepant/changepoint_response.png}
-        \subcaption{Like DeepAnT, output from N-BEATS often resembles the original
-        time series.}\label{fig:nbeats-resembles}
-    \end{subfigure}
-    \caption{Examples from N-BEATS.}\label{fig:nbeats-output}
-\end{figure}
-
-\begin{figure}[htp!]
-    \begin{subfigure}[b]{\linewidth}
-        \centering
-        \includegraphics[width=.7\textwidth]{evaluation/hw/broken.png}
-        \subcaption{An example of computational instability from Holt-Winters.}\label{fig:hw-instability}
-    \end{subfigure}\label{fig:hw-broken}
-    \\
-    \begin{subfigure}[b]{\linewidth}
-        \centering
-        \includegraphics[width=.7\textwidth]{evaluation/hw/broken_trend.png}
-        \subcaption{An example of inferred trends from Holt-Winters that are not
-        found within the data.}\label{fig:hw-trend-instability}
-    \end{subfigure}
-    \\
-    \begin{subfigure}[b]{\linewidth}
-        \centering
-        \includegraphics[width=.7\textwidth]{evaluation/hw/unstable3.png}
-        \subcaption{A more ordinary example from Holt-Winters.}\label{fig:hw-ordinary}
-    \end{subfigure}
-    \caption{Examples from Holt-Winters.}\label{fig:hw-output}
-\end{figure}
-
-\begin{figure}[htp!]
-    \begin{subfigure}[b]{\linewidth}
-        \centering
         \includegraphics[width=.7\textwidth]{evaluation/khundman/highfp.png}
         \subcaption{High false positives rate on time series with many spikes.}\label{fig:khundman-fp}
     \end{subfigure}%
@@ -515,5 +578,94 @@ This section provides additional time series plots from \gls{nab}.
     \caption{Examples from \gls{ndt}.}\label{fig:khundman-output}
 \end{figure}
 
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/lstm_ad/false-positives.png}
+        \subcaption{High false positives rate on time series with many spikes.}\label{fig:lstmad-fp}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/lstm_ad/cyclicity.png}
+        \subcaption{Cyclicity violations remain undetected by LSTM-AD.}\label{fig:lstmad-cyclicity}
+    \end{subfigure}
+    \caption{Examples from LSTM-AD.}\label{fig:lstmad-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/cblof/highfp.png}
+        \subcaption{High false positives rate on (some) time series with irregular spikes.}\label{fig:cblof-fp}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/cblof/infreq_spikes.png}
+        \subcaption{Adaptation to more regularly spiking time series.}\label{fig:cblof-cyclicity}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}[htp!]
+    \ContinuedFloat{}
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/cblof/good_result.png}
+        \subcaption{Example of a good result from \gls{cblof}.}\label{fig:cblof-good}
+    \end{subfigure}
+\caption{Examples from \gls{cblof}.}\label{fig:cblof-output}
+\end{figure}
+
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/lstm_ed/highfp.png}
+        \subcaption{High false positives rate on (some) time series with irregular spikes.}\label{fig:lstmed-fp}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/lstm_ed/harder_box.png}
+        \subcaption{A harder anomaly (dotted box) detected by LSTM-ED.}\label{fig:lstmed-harder}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \begin{subfigure}[b]{.45\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{evaluation/lstm_ed/artificial_lstm.png}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{.45\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{evaluation/lstm_ed/artificial_cblof.png}
+        \end{subfigure}
+        \subcaption{Left) Results from LSTM-ED on one of the artificial time series (straight line).
+        Right) Results from \gls{cblof} on the same artificial time series.}\label{fig:lstmed-artificial}
+    \end{subfigure}
+\caption{Examples from LSTM-ED.}\label{fig:lstmed-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/knn/cyclicity.png}
+        \subcaption{A simple cyclicity violation that was detected by \gls{knn},
+        presumably due to its unusual value range.}\label{fig:knn-cyclicity}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/knn/good.png}
+        \subcaption{A difficult anomaly detected by \gls{knn} (rightmost anomaly).}\label{fig:knn-harder}
+    \end{subfigure}
+\caption{Examples from \gls{knn}.}\label{fig:knn-output}
+\end{figure}
+
+
+
+
 \todo{Check if clearpage is still necessary in complete appendix}
 \todo{Remove DOI-Links}
+\todo{Order figures to their chronology within the text}
