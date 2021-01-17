@@ -44,7 +44,14 @@
 
 \usepackage[textwidth=15mm]{todonotes} % Insert von Todos - [disable]
 \setlength{\marginparwidth}{20mm} % For todonotes
-
+\usepackage{hyperref}           % Verlinkungen im Dokument
+\usepackage[nameinlink]{cleveref}
+\hypersetup{
+ colorlinks,
+ linkcolor={red!45!black},
+ citecolor={blue!50!black},
+ urlcolor={blue!80!black}
+}
 
 
 %%%% <Workarounds> %%%%
@@ -93,7 +100,6 @@
 
 %%% Counter to remember page number %%%
 \newcounter{roman-pagenumber}
-
 \begin{document}
 \input{Structure/GlossarMetadaten}
 
