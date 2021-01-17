@@ -29,8 +29,11 @@ in this paper.
         \text{timestamp } t & \in{} & \(\mathbb{Z}\)\\
         \text{value } y      & \in{} & \(\mathbb{R}\)
     \end{conditions}
-    
-    The timestamp can be further interpreted as unix epoch time, coarsely given in \cref{eq:unix-time}
+    Arithmetic operations are executed using value y, s.t.\ \(o_i + o_j = y_i + y_j\),
+    where \(+\) is an arbitrary operation.
+
+    The timestamp can be further interpreted as POSIX time~\cite{TheOpenGroup.2018},
+    coarsely given in \cref{eq:unix-time}.
     \begin{equation}\label{eq:unix-time}
         \begin{cases}
             \text{before 01 Jan 1970 00:00:00 GMT},& {\text{if } t < 0}\\
@@ -41,14 +44,12 @@ in this paper.
 \end{definition}
 
 \begin{definition}[Time Series]\label{defn:time-series}
-    A time series is the ordered set of multiple related observations.
+    A time series is the ordered set of multiple related observations~\cite[cf.][]{Box.2016}.
     It can be indexed in two complementary ways, using either
     \begin{enumerate*}[a.)]
         \item the timestamp of the current observation \cref{eq:time-series-timestamp} or
         \item the count of the current observation \cref{eq:time-series-count}.
     \end{enumerate*}
-
-
     \begin{align}
         \text{Timestamp-Indexed TS}&:= \left\{ y^{(t_0)},\ldots, y^{\left(t_{T-1}\right)} \right\}\label{eq:time-series-timestamp}\\
         \text{Count-Indexed TS}&:= \left\{ o^{(0)},\ldots, o^{(T-1)} \right\}\label{eq:time-series-count}
@@ -67,17 +68,17 @@ in this paper.
     cyclicity (\cref{def:cyclicity})
 \end{definition}
 
-For system-health data time series, the observation \(o_t\) is usually
-related to multiple other observations. Most obviously, \(o_t\) is related to 
-values from its neighborhood (\cref{def:neighborhood}). Furthermore, it might
-be influenced by multiple levels of cyclicity (\cref{def:cyclicity}).
+The observation \(o_t\) is then usually related to/influenced by several other
+observations  within the same time series. Most obviously, \(o_t\) is related to
+values from its neighborhood (\cref{def:neighborhood}). Furthermore, it might be
+influenced by multiple levels of cyclicity (\cref{def:cyclicity}).
 
 \begin{definition}[Neighborhood]\label{def:neighborhood}
     The neighborhood of an observation in a time series is the set of its
     \(n\)-surrounding values. Mathematically given in \cref{eq:neighborhood}.
 
     \begin{equation}\label{eq:neighborhood}
-        \left\{ o_{t-n/2},\ldots,o_{t+n/2} \right\} \setminus o_t,\ n\in \mathbb{N}
+        \left\{ o_{t-n/2},\ldots,o_{t+n/2} \right\} \mathbin{\big\backslash} o_t,\ n\in \mathbb{N}
     \end{equation}
 \end{definition}
 
@@ -96,7 +97,7 @@ Breakages can manifest visually in different forms. Common forms are
     \item\label{itm:1} a drop/peak significantly below/above previously observed values,
     \item\label{itm:2} a drop/peak below/above typical values of the neighborhood
     \item\label{itm:3} a drop/peak below/above its expected cyclic dependencies,
-    \item\label{itm:4} a change point (lasting violation of a cyclic pattern).
+    \item\label{itm:4} a change point (lasting violation (/ introduction) of a (new) cyclic pattern).
 \end{enumerate}
 An influential taxonomy of such breakages has been introduced by \textcite{Chandola.2009}
 as follows:
@@ -145,22 +146,21 @@ as follows:
 \end{figure}
 
 All common breakage forms are included in one of the three anomaly definitions.
-We therefore try to retrieve all data points which fall under one of the
-\cref{def:point-anomaly,def:contextual-anomaly,def:collective-anomaly}.
-
+In anomaly detection we therefore try to retrieve all data points which fall
+under one of the \cref{def:point-anomaly,def:contextual-anomaly,def:collective-anomaly}.
 
 \subsection{How are we retrieving it?}\label{subsect:how-are-we-retrieving-it}
 Retrieval of anomalies as defined in \cref{def:point-anomaly,def:contextual-anomaly,def:collective-anomaly}
 can be done via different paradigms. Extensive taxonomies have been proposed in~\cite{Chandola.2009,Zietlow.2020}.
 Because theoretical examination is not central to this paper, the taxonomy will
-be presented merely simplified and condensed.
+be presented simplified and condensed.
 
 Two major groups of algorithms can be considered: either Forecasting- or
 Boundary-based:
 \begin{definition}[Forecasting-Based-Algorithm]\label{def:forecasting-based-algo}
     Forecasting-based algorithms consist of two major phases:
     \begin{enumerate}[a.)]
-        \item In the first phase, the algorithm tries to predict the next \(n\)-observation
+        \item In the first phase, the algorithm tries to predict the next \(n\)-observations
         given a learning history of previous observations. A predicted observation
         is denoted \(\hat{o}\). Deviations from the ground truth are recorded.
         A common approach would be to calculate the squared error \(e = {\left(o - \hat{o}\right)}^2\).
@@ -171,7 +171,9 @@ Boundary-based:
         For details confer~\cite{Zietlow.2020}.\label{forecasting-phase-b}
     \end{enumerate}
     Phase~\ref{forecasting-phase-b} is not part of most forecasting algorithms.
-    For details see \cref{sec:forecasting-eval}.
+    And has therefore been implemented by the author. \acrfull{ndt}
+    by \textcite{Hundman.2018} was able to outperform other approaches and was
+    therefore used throughout this paper. For details see \cref{sec:forecasting-eval}.
 \end{definition}
 
 \begin{definition}[Boundary-Based-Algorithm]\label{def:boundary-based-algo}

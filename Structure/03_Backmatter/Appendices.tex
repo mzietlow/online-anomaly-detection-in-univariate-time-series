@@ -12,8 +12,12 @@ threshold was remarked as a detection (\cref{def:detection}). Both
 were disregarded for their computational complexity and subpar results.
 
 More complex scoring methods from \cite{Ahmad.2017,Hundman.2018} were adopted.
+While the method from \textcite{Ahmad.2017} is illustrated in this section,
+non-parametric thresholding from \textcite{Hundman.2018} was able to outperform
+it in every application and was therefore used to produce the final results.
+For details please review~\cite{Hundman.2018}.
 
-\textcite{Ahmad.2017} suggest to model the distribution of errors as a rolling normal
+\textcite{Ahmad.2017} suggest modelling the distribution of errors as a rolling normal
 distribution with mean and standard deviation \(\mu_t, \sigma_t\) according to
 \cref{eq:rolling-mean,eq:rolling-std}
 
@@ -36,7 +40,7 @@ where:
     W' &:= & Short-term window size, set to \(W'=10\) as proposed by~\cite{Ahmad.2017}
 \end{conditions}
 
-The likelihood (\cref{eq:likelihood}is calculated using the \gls{cdf} of a normal gaussian distribution
+The likelihood (\cref{eq:likelihood}) is calculated using the \gls{cdf} of a normal gaussian distribution
 given in \cref{eq:cdf}
 as
 \begin{align}
@@ -52,10 +56,6 @@ where:
 Finally, a detection is recorded, when \(L_t \geq \epsilon \lor L_t \leq 1 - \epsilon\).
 This is a slight deviation from~\cite{Ahmad.2017}, where only an upper p-test is
 performed.
-
-For details on the non-parametric thresholding as per \textcite{Hundman.2018},
-please review their paper.
-
 
 \section{Calculation of the Numenta Anonamly Metric Score}\label{app:numenta-score}
 The Numenta Anomaly Metric Score for a single time series is the addition of
@@ -262,7 +262,7 @@ This section provides additional time series plots from \gls{nab}.
             \href{https://github.com/kLabUM/rrcf}{rrcf}                                                             & Robust Random Cut Forest~\cite{Guha.2016}                                                                                                                                                                                                                                                                                                                                                                                     & 0.4.3     & 10th June 2020    & 271   \\\addlinespace 
             \href{https://github.com/chickenbestlover/RNN-Time-series-Anomaly-Detection}{rnn ts anomaly detection}  & LSTM, GRU, SRU                                                                                                                                                                                                                                                                                                                                                                                                                & /         & 21st Oct 2020     & 684   \\\addlinespace 
             \href{https://github.com/datamllab/tods}{TODS: Time-series Outlier Detection System}                    & DeepLog~\cite{Du.2017}, Telemanom Matrix Profile, PyOD algorithms                                                                                                                                                                                                                                                                                                                                                             & /         & 5th Jan 2021      & 258   \\\addlinespace
-            \href{https://github.com/earthgecko/skyline}{Skyline}                                                   & Ensemble of statistical tests like Kolmogorov-Smirnov, Grubbs, deviation from median\ldots                                                                                                                                                                                                                                                                                                                                    & 2.0       & 22th Dec 2020     & 284   \\\addlinespace
+            \href{https://github.com/earthgecko/skyline}{Skyline}                                                   & Ensemble of statistical tests like Kolmogorov-Smirnov, Grubbs, deviation from median\ldots                                                                                                                                                                                                                                                                                                                                    & 2.0       & 22nd Dec 2020     & 284   \\\addlinespace
             \href{https://github.com/tsurubee/banpei}{Banpei}                                                       & Hotelling's theory~\cite{Hotelling.1990} and Singular Spectrum Transformation                                                                                                                                                                                                                                                                                                                                                 & /         & 21st Sept 2020    & 222   \\\addlinespace
             \href{https://github.com/htm-community/htm.core}{NuPIC}                                                 & Numenta HTM                                                                                                                                                                                                                                                                                                                                                                                                                   & /         & 23 Oct 2019       & 6.2k   \\\addlinespace
             \href{https://github.com/matrix-profile-foundation/matrixprofile}{MPF}                                  & Matrix Profile                                                                                                                                                                                                                                                                                                                                                                                                                & /         & 26th Dec 2020     & 121    \\
@@ -334,7 +334,7 @@ This section provides additional time series plots from \gls{nab}.
         \begin{tabular}{ll}
             Boundary Algorithm                                  & Package/Implementation   \\\midrule                                                                               
             \gls{lof}~\cite{Breunig.2000}                       & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
-            Autoencoder~\cite[499\psqq]{Goodfellow.2016}        & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
+            \gls{ae}~\cite[499\psqq]{Goodfellow.2016}        & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
             \gls{cblof}~\cite{He.2003}                          & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
             \gls{dagmm}\cite{Zong.2018}                         & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
             \gls{knn}~\cite[16\psqq]{Murphy.2012}               & \href{https://github.com/datamllab/pyodds}{PyODDS}                            \\\addlinespace
@@ -541,7 +541,7 @@ This section provides additional time series plots from \gls{nab}.
         \subcaption{A representative true positive from \gls{dagmm}. The
         reason for the anomaly is the high value spike (inside the red area).
         \gls{dagmm} (unreasonably) attributes the anomaly to a normal value
-        approximately two days previous.}
+        approximately two days before.}
     \end{subfigure}
     \caption{Examples from \gls{dagmm}.}\label{fig:dagmm-output}
 \end{figure}
@@ -641,13 +641,19 @@ This section provides additional time series plots from \gls{nab}.
             \centering
             \includegraphics[width=\textwidth]{evaluation/lstm_ed/artificial_cblof.png}
         \end{subfigure}
-        \subcaption{Left) Results from LSTM-ED on one of the artificial time series (straight line).
-        Right) Results from \gls{cblof} on the same artificial time series.}\label{fig:lstmed-artificial}
+        \subcaption{Left: Results from LSTM-ED on one of the artificial time series (straight line).
+        Right: Results from \gls{cblof} on the same artificial time series.}\label{fig:lstmed-artificial}
     \end{subfigure}
 \caption{Examples from LSTM-ED.}\label{fig:lstmed-output}
 \end{figure}
 
 \begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/knn/no_spikes.png}
+        \subcaption{Two simple spike anomalies missed by \gls{knn}.}\label{fig:spike-missed}
+    \end{subfigure}
+    \\
     \begin{subfigure}[b]{\linewidth}
         \centering
         \includegraphics[width=.7\textwidth]{evaluation/knn/cyclicity.png}
@@ -663,6 +669,104 @@ This section provides additional time series plots from \gls{nab}.
 \caption{Examples from \gls{knn}.}\label{fig:knn-output}
 \end{figure}
 
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/threshold/good.png}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/threshold/representative.png}
+    \end{subfigure}
+\caption[Examples from Numenta Threshold Detector.]{Two representative examples
+from the Numenta Threshold Detector.}\label{fig:threshold-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/skyline/cyclicity.png}
+        \subcaption{Skyline was unable to detect cyclicity violations.}\label{fig:skyline-cyclicity}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/skyline/uncommon_spikes.png}
+        \subcaption{An example of spikes that are outside the moving 3-Sigma
+        rule and thereby lead to many false positives.}\label{fig:skyline-fp}
+    \end{subfigure}
+\caption{Examples from Skyline.}\label{fig:skyline-output}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \begin{subfigure}[b]{.45\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{evaluation/ae/ae3.png}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{.45\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{evaluation/ae/lstm3.png}
+        \end{subfigure}
+        \subcaption{\gls{ae} (left) is able to produce one more true positive than LSTM-ED (right)
+        on this example}\label{fig:lstm-vs-ae1}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \begin{subfigure}[b]{.45\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{evaluation/ae/result_from_ae_1.png}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{.45\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{evaluation/ae/result_from_lstmed_1.png}
+        \end{subfigure}
+        \subcaption{\gls{ae} (left) produces one more true positive and five less false
+        positives than LSTM-ED (right) on this example.}\label{fig:lstm-vs-ae2}
+    \end{subfigure}
+\caption{Comparsion of \gls{ae} and LSTM-ED on two time series.}\label{fig:lstm-vs-ae}
+\end{figure}
+
+\begin{figure}[htp!]
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/htm/cyclicity_1.png}
+        \subcaption{\gls{htm} was able to detect simple cyclicity violations in the
+        artificial time (and thereby simple) series.}\label{fig:htm-cyclicity}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/htm/cyclicity_2.png}
+        \subcaption{More difficult cyclicity violations were not detected.}\label{fig:htm-cyclicity2}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/htm/subtle_box.png}
+        \subcaption{\gls{htm} was more sensitive for some subtle anomalies.}\label{fig:htm-subtle}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}
+    \ContinuedFloat{}
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/htm/unreliable_on_fast_fluctuation.png}
+        \subcaption{\ldots while other subtle anomalies were overlooked.}\label{fig:htm-subtle-overlooked}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{evaluation/htm/high_fp_regular_high_spikes.png}
+        \subcaption{\gls{htm} did not adapt to regular yet infrequent value spikes.}\label{fig:htm-spikes}
+    \end{subfigure}
+\caption{Examples from \gls{htm}.}\label{fig:htm-output}
+\end{figure}    
 
 
 

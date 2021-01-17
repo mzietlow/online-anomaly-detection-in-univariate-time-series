@@ -35,19 +35,23 @@ usable for anomaly detection.
 \begin{description}[style=unboxed,leftmargin=0cm]
     \item[DeepAnT] In simple cases, DeepAnT is able to learn cyclicity of the data,
     and thereby uncover cyclicity violation (see \cref{fig:deepant-cyclicity}).
-    In more complex cases however, the result more closely \textit{reconstruct}
-    the time series (see \cref{fig:deepant-resemble}). Neither increasing the history window
+    In more complex cases however, its output error-terms \(e\) more closely
+    \textit{reconstruct} the time series\footnote{\label{foot:err-reconstructs}When
+    error-terms seem to reconstruct the input time series, this implies that the
+    method is unable to make valuable predictions beyond e.g.\ inferring the mean.}
+    (see \cref{fig:deepant-resemble}). Neither increasing the history window
     (that is used to predict the upcoming observation) nor increasing the number
     of training iterations were able to alleviate the problem. An interesting
     exception from this are change points, where predictions slowly adapt to the
     new mean of observations (see \cref{fig:deepant-changepoint}).
     \item[NBEATS] Other than DeepAnT, NBEATS seem unable to infer cyclicity from
     the data (see \cref{fig:nbeats-cyclicity}). For more complex time series,
-    NBEATS also resembles the original time series data (see \cref{fig:nbeats-resembles}).
-    Interestingly, value spikes are followed by a short decrease in prediction
-    accuracy (see \cref{fig:nbeats-spike-impact}). The output is therefore often
-    more chaotic than that of DeepAnT. While it may seem counterintuitive, that
-    NBEATS achieves higher scores than DeepAnT. This is related to three conditions:
+    NBEATS' error-terms also resemble\cref{foot:err-reconstructs} the original
+    time series data (see \cref{fig:nbeats-resembles}). Interestingly, value
+    spikes are followed by a short decrease in prediction accuracy
+    (see \cref{fig:nbeats-spike-impact}). The output is therefore often more
+    chaotic than that of DeepAnT. While it may seem counterintuitive that NBEATS
+    achieves higher scores than DeepAnT. This is related to three conditions:
     \begin{enumerate*}[a.)]
         \item as noted, value spikes cause more chaotic outputs,
         \item many anomalies for the \gls{nab} are point anomalies with high value spikes, and
@@ -78,8 +82,8 @@ usable for anomaly detection.
     (from observation) real world time series contain many such irregularities
     that are \textit{not} considered anomalous.
     
-    On more chaotic examples the algorithms output (again) more closely resembles
-    the input time series (see \cref{fig:arima-resembles}).
+    On more chaotic examples the algorithms error-terms (again) more closely
+    resemble\cref{foot:err-reconstructs} the input time series (see \cref{fig:arima-resembles}).
     
     As a side note to the interested reader, predictions were generated as in-sample
     1-step-ahead forecasts using \mbox{\texttt{predict\_in\_sample(*args, **kwargs)}~\cite{Smith.2017}}.
@@ -88,12 +92,12 @@ usable for anomaly detection.
     it also produced the highest number of false positives. Although a large number
     (57) of them can be attributed to only a single time series (see \cref{fig:prophet-fp}),
     Prophet still did not perform well. Similar to other forecasting algorithms
-    for complex examples, Prophet reproduced the original time series --- yet
-    with a quirk: Prophet assumed seasonality within the data where seasonality
-    was absent. This resulted in a curvy output (see \cref{fig:prophet-curvy}).
-    Besides that, Prophet was able to understand cyclicity in \textit{simple} time
-    series (see \cref{fig:prophet-cyclicity}).
-\end{description}\todo{Predictions from forecasting methods are actually prediction-errors}
+    for complex examples, Prophets error-terms reproduced\cref{foot:err-reconstructs}
+    the original time series --- yet with a quirk: Prophet assumed seasonality within
+    the data where seasonality was absent. This resulted in a curvy output
+    (see \cref{fig:prophet-curvy}). Besides that, Prophet was able to understand
+    cyclicity in \textit{simple} time series (see \cref{fig:prophet-cyclicity}).
+\end{description}
 \bigskip
 {\large\uline{\textbf{Boundary Algorithms}}}\\
 \begin{description}[style=unboxed,leftmargin=0cm]
@@ -167,11 +171,6 @@ usable for anomaly detection.
     The algorithm was not robust to datasets where spikes were strong but regular
     (see \cref{fig:htm-spikes}).
 \end{description}
-\clearpage\todo{clearpage required?}
-
-\subsection{Discussion}\label{subsect:discussion}
-
-
 
 % Chosen Library Anomaly Detection & Forecasting
 \begin{table}[h]\centering
@@ -207,3 +206,6 @@ usable for anomaly detection.
     (right) F1-Score~\cite[183]{Murphy.2012}, true positives, false positives
     and false negatives respectively.}\label{tab:results}
 \end{table}
+
+
+\subsection{Discussion}\label{subsect:discussion}

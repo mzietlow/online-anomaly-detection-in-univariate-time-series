@@ -23,18 +23,19 @@ flaws:
     \textit{max}, \textit{std}, \textit{diff}.
     
     Examples that demonstrate this flaw are taken mainly from the Yahoo!S5 dataset
-    for which also a brute force computational example is provided. Three time series
-    from OMNI are examined and only a single one from \gls{nab}.
+    for which also a code listing of a brute force approach is provided. Three
+    time series from OMNI are examined and only a single one from \gls{nab}.
     
     For NASA, \textcite{Renjie.2020} claim that about 90\% of included anomalies
-    are trivial and show \(>10\) examples. For OMNI 50\% are claimed to be trial,
+    are trivial and show \(>10\) examples. For OMNI, 50\% are claimed to be trial,
     but only three examples are given. For \gls{nab}, the authors claim that
     \textit{most} time series are trivial, but omit evidence by giving only a
     single example.
 
     \item[Unrealistic Density] A dataset is considered unrealistically dense, if
+    either
     \begin{enumerate*}[a.)]
-        \item a large portion (e.g.\ \(> 0.1\)) of observations are labeled anomalous,
+        \item a large portion (e.g.\ \(> 0.33\)) of observations are labeled anomalous,
         \item many (e.g.\ \(> 5\)) proximal regions are marked as separate anomalies,
         \item separate anomalies are proximal (e.g.\ \textit{sandwiching} a single
         normal observation)~\cite[cf.][]{Renjie.2020}.
@@ -42,8 +43,8 @@ flaws:
 
     Examples that demonstrate this flaw are taken from Yahoo!S5 and NASA\@.
 
-    \item[Mislabeled Ground Truth] A dataset is mislabeled if it contains any
-    false positives or false positives.
+    \item[Mislabeled Ground Truth] A dataset is mislabeled if its labels contain
+    any false negatives or false positives.
 
     Examples that demonstrate this flaw are taken mainly from Yahoo!S5. A single
     time series from \gls{nab} is given examined.
@@ -70,29 +71,24 @@ but its release is still delayed.
 The \acrfull{nab} was created as a compilation of 11 synthetic and 47 real
 domain specific time series. Of the 11 synthetic time series, 5 do not contain
 anomalous values. Every time series consists of both a timestamp and a single
-numeric value (see \defref{def:observation}) and contain between 1000--22.000 such
-observations. The complete benchmark contains a total of 365.551 observations.
+numeric value (see \defref{def:observation}) and contains between 1000--22.000 such
+observations. The complete benchmark contains a total of 365.551 observations~\cite{Lavin.2015}.
 
 The time series (except for the \textit{realKnownCause}-subset) were labeled
 according to a unified procedure~\cite{Numenta.2015} by a team of
-multiple researchers. It was released in October 2015, to
-\begin{enumerate*}[a.)]
-    \item react to a lack of publicly available benchmarks
-    for univariate anomaly detection (although by that time the Yahoo!S5 benchmark
-    had been released already) and 
-    \item to showcase the results of their HTM algorithm.
-\end{enumerate*}
-\todo{citations!}
+multiple researchers. It was released in October 2015, as a reaction to the lack
+of publicly available benchmarks for univariate anomaly detection (although by
+that time the Yahoo!S5 benchmark had already been released).
+
 The upcoming paragraph describes the scoring function introduced with \gls{nab}.
 This is followed (in vein of~\cite{Renjie.2020}) by a short visual examination
 of the dataset.
 
 \paragraph{Numenta Anomaly Metric}
-Numenta~\cite{Lavin.2015} defines a custom scoring function.
-They choose to do so rather than using F-Score~\cite[183]{Murphy.2012} or similar
-well-known metric, because ``traditional scoring methods [\dots] do not incorporate
-time and do not reward early detection [and are therefore] not applicable to
-[real-time anomaly detection]''~\cite{Lavin.2015}.
+Numenta~\cite{Lavin.2015} defines a custom scoring function.\ They choose to do
+so rather than using F-Score~\cite[183]{Murphy.2012} or similar well-known metric,
+because ``traditional scoring methods [\dots] do not incorporate time and do not
+reward early detection [and are therefore] not applicable to [real-time anomaly detection]''~\cite{Lavin.2015}.
 
 The metric is defined using \textit{anomaly windows}.
 \begin{definition}[Anomaly Window]\label{def:anomaly-window}
@@ -122,18 +118,21 @@ In this paragraph, an overview of the most common anomaly types within the \gls{
 is given. From visual observation only, the vast majority (about 30) of time
 series from the dataset contain point anomalies~\cref{fig:point-anomalies-nab}.
 Other more common types include contextual anomalies \cref{fig:contextual-anomalies-nab}.
-Collective anomalies are only appear in form of change points. A very good example
-as the one from \cref{fig:collective-anomalies-nab} is not contained in \gls{nab}.
+Collective anomalies only appear in form of change points. A very good example
+for collective anomalies however, as the one from \cref{fig:collective-anomalies-nab},
+is not found within \gls{nab}.
 
 Regarding triviality allegations from \textcite{Lavin.2015}, \(\sim 1/3\) of
 point anomalies are so far from their neighborhood, that \(\mu_t + 3*\sigma_t\)
-where \(\) would suffice to detect them, e.g.\ \cref{fig:point-anomalies-nab}.
+(\(\mu_t, \sigma_t\) are the moving mean and the moving standard deviation
+respectively) would suffice to detect them, e.g.\ \cref{fig:point-anomalies-nab}.
 This implies triviality of the dataset. However, such trivial solution would
-also detect many false positives. While, from short examination, it should be
-possible to solve many of the time series presented in \gls{nab} with
-comparatively simple statistical operations, this solution would be unique for
-every time series. Thereby defeating the purpose of \gls{nab} of scoring a
-unified algorithm that must \textit{not} be adjusted for every such time series.
+also detect many false positives. While, from short examination, it appears possible
+to solve many of the time series presented in \gls{nab} with comparatively simple
+statistical operations, such a solution would probably require a unique set of such
+operations for every time series. Thereby defeating the purpose of \gls{nab} of
+scoring a unified algorithm that must \textit{not} be adjusted for every such
+time series.
 
 Additional plots from the dataset can be found in \cref{sect:additonal-plots-dataset}.
 
@@ -142,12 +141,10 @@ Additional plots from the dataset can be found in \cref{sect:additonal-plots-dat
     \begin{subfigure}[t]{.49\linewidth}
         \centering
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/Twitter_volume_CRM.png}
-        \subcaption{\footnotesize{}Point anomalies: Twitter\_volume\_CRM.csv}
     \end{subfigure}
     \begin{subfigure}[t]{.49\linewidth}
         \centering
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/ec2_request_latency_system_failure.png}
-        \subcaption{\footnotesize{}ec2\_request\_latency\_system\_failure.csv}
     \end{subfigure}
     \caption{Two examples of Point Anomalies}\label{fig:point-anomalies-nab}
 \end{figure}
@@ -157,12 +154,10 @@ Additional plots from the dataset can be found in \cref{sect:additonal-plots-dat
     \begin{subfigure}[t]{.49\linewidth}
         \centering
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/art_daily_jumpsdown.png}
-        \subcaption{\footnotesize{}Point anomalies: art\_daily\_jumpsdown.csv}
     \end{subfigure}
     \begin{subfigure}[t]{.49\linewidth}
         \centering
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/art_daily_nojump.png}
-        \subcaption{\footnotesize{}art\_daily\_nojump}
     \end{subfigure}
     \caption{Two examples of (artificial) cyclicity violations (contextual anomalies)}\label{fig:contextual-anomalies-nab}
 \end{figure}
@@ -172,7 +167,6 @@ Additional plots from the dataset can be found in \cref{sect:additonal-plots-dat
     \begin{subfigure}[t]{.49\linewidth}
         \centering
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/grok_asg_anomaly.png}
-        \subcaption*{grok\_asg\_anomaly.csv}
     \end{subfigure}
     \caption{An example of two change points (collective anomalies) and a point anomaly}\label{fig:collective-anomalies-nab}
 \end{figure}\todo{Is clearpage still required?}
@@ -181,21 +175,23 @@ Additional plots from the dataset can be found in \cref{sect:additonal-plots-dat
 \subsection{Algorithm overview}
 In an attempt to reduce the implementation complexity required for this paper,
 the majority of algorithms has been adopted from open source libraries and
-adjusted slightly for application to the \gls{nab} dataset. On GitHub, several
-repositories can be found which curate lists of such libraries. All repositories
-used for this process are listed in \cref{tab:curation-lists}.
+adjusted slightly for application to the \gls{nab} dataset.\footnote{Customization most notably
+included the partition of time series into multiple subsets that were alternatingly
+used for training and inference.} On GitHub, several repositories can be found
+which curate lists of such libraries. All repositories used for this process are
+listed in \cref{tab:curation-lists}.
 
 From these repositories, all libraries that offer algorithms belonging to either
 \invdefref{def:forecasting-based-algo} or \invdefref{def:boundary-based-algo}
 are listed in the appendix (forecasting-based: \cref{def:forecasting-based-algo},
-boundary-based: \cref{tab:ad-packages}). Both tables contain an (almost exhaustive)
-list of models offered by the library, the latest released version, and the date
-of the latest commit.
+boundary-based: \cref{tab:ad-packages}). Both tables contain three columns:
+an (almost exhaustive) list of models offered by the library, the latest
+released version, and the date of the latest commit.
 
-Then, a subset of ten libraries is chosen, five of them with a focus on forecasting
-and the remaining five with a focus on boundaries. Libraries that are encapsulated
-in others are dropped from the list (e.g.\ \(\text{Prophet, GluonTS } \in \text{ AtsPy}\)).
-Finally, the libraries are picked by the author, whereby recently updated libraries,
+Then, a subset of ten libraries is chosen. Five of them with a focus on forecasting
+and the remaining five with a focus on boundaries. Libraries that are found within
+another library are dropped from the list (e.g.\ \(\text{Prophet, GluonTS } \in \text{ AtsPy}\)).
+Finally, a set of libraries is picked by the author, whereby recently updated libraries,
 libraries with sufficient documentation and libraries with a high number of
 stars (measuring to an extent the appreciation of the community) are slightly
 preferred. The chosen libraries are presented in \cref{tab:chosen-packages}.

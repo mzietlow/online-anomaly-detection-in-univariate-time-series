@@ -7,17 +7,18 @@ minute, or system loads like CPU and RAM\@. While breakages often manifest visib
 to the human spectator in the related system-health data, it is impossible to spectate
 millions of data streams as often produced in larger companies~\cite[cf.][]{Zhu.2017}.
 
-To alleviate this complexity, anomaly detection algorithms are introduced
-which automate the detection of such system issues. The domain of anomaly detection,
-however, is frequently evolving and it is unclear, which algorithm to choose.
+To alleviate this complexity, anomaly detection algorithms are introduced,
+which automate the detection of such system issues. However, the domain of
+anomaly detection is frequently evolving, and it is unclear, which algorithm to
+choose.
 
 In this paper, a number of algorithms is evaluated and compared using the
-\gls{nab}-dataset, consisting of more than 100 unrelated time series.
+\gls{nab}-dataset, consisting of 58 time series~\cite{Lavin.2015}.
 
 The paper is organized as follows. In \cref{sect:definitions}, explanations for
 time series, anomalies and anomaly detection are found. In \cref{sect:experimental-setup},
-the \gls{nab} dataset is described and the recent controversy surrounding
-it is discussed. Also reasoning for algorithm-selection is given.
-In \cref{sect:results-and-discussion}, the used metric is explained and the
-produced results are discussed. Finally in \cref{sect:conclusion}, the paper is
-wrapped up and recommendations on algorithm usage and future work are given.
+the \gls{nab} metric and dataset are described and a recent controversy surrounding
+\gls{nab} is discussed. Also, reasoning for algorithm-selection is given.
+In \cref{sect:results-and-discussion}, the produced results are given and discussed.
+Finally, in \cref{sect:conclusion}, the paper is wrapped up and recommendations
+on algorithm usage and future work are given.
