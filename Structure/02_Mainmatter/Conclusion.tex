@@ -1,12 +1,36 @@
 \section{Conclusion}\label{sect:conclusion}
-Time series from \gls{nab} are not able to answer specific questions on the
-behavior of algorithms
-\blindtext[1]
+In this paper, a larger number of diverse algorithms was applied to the
+Numenta \acrfull{nab}. Algorithms were divided into two families, \textit{forecasting}-
+and \textit{boundary}-based algorithms. It was observed, that forecasting-based
+algorithms were often unable to handle complex time series, for which their error-terms
+merely reconstructed the input time series. On more simple time series,
+forecasting-based methods were able to infer cyclicity and detect anomalies regarding
+it. Boundary-based algorithms, on the other hand, were (usually) unable to infer cyclicity
+but were often more robust to complex time series. However, they mostly detected
+anomalies revolving around a value spike (either \invdefref{def:point-anomaly}
+or \invdefref{def:contextual-anomaly}) and were often insensitive to more complex
+anomalies. Especially value dropouts were very hard to detect. Also, small value
+fluctuations were often overlooked. For such fluctuations, discord-detection
+algorithms would presumably improve results~\cite[cf.][]{Nakamura.2020}.
 
-\subsection{Recommendations}\label{subsect:recommendations}
-\blindtext[1]
+Regarding the dataset, time series from \gls{nab} are often unable to answer
+specific questions on the behavior of algorithms. A new supposedly improved
+dataset is currently under construction by \textcite{Renjie.2020}. From experience
+however, visual evaluation lives by building, confirming, and destroying
+hypotheses. A static dataset might not be able to provide such versatility.
+
+And so unfortunately, the task of evaluating the applicability of any algorithm
+remains the task of the practitioner.
 
 \subsection{Future Work}
-\gls{ndt} contains a scoring mechanism for anomalies, that could be improved
-to be able to rate anomalies. \gls{nab} is unfit to ``fence'' off algorithms
-and explain their behavior visually.
+Future work derived from this paper is rather vague.
+
+Obviously, one could evaluate additional algorithms. The author would have also
+liked to examine e.g.\ Luminol~\cite{LinkedIn.2015}, MERLIN~\cite{Renjie.2020},
+and the forecasting package GluonTS~\cite{Alexandrov.2020} --- but compatibility
+issues were faced that could not have been solved within time.
+
+A more important contribution however would be the clear definition of an extended
+evaluation process. This process might build upon a more diverse dataset
+(hopefully~\cite{Renjie.2020}) and require the generation of new time series to
+verify and fence off claims about discussed methods.
