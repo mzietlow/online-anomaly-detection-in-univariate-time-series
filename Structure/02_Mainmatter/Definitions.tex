@@ -3,11 +3,11 @@ Although theoretical examination is not central to this work, the interested
 reader shall be introduced to the most fundamental concepts in this section.
 
 Namely,
-\begin{enumerate*}[a.)]
+\begin{enumerate}[a.)]
     \item what is the data structure (time series),
     \item what are we trying to retrieve (anomalies), and
     \item how are we retrieving it (anomaly detection).
-\end{enumerate*}
+\end{enumerate}
 
 \subsection{What is the data structure?}
 System-health data is produced in a variety of formats. Most commonly it comprises
@@ -47,8 +47,8 @@ in this paper.
     A time series is the ordered set of multiple related observations~\cite[cf.][]{Box.2016}.
     It can be indexed in two complementary ways, using either
     \begin{enumerate*}[a.)]
-        \item the timestamp of the current observation \cref{eq:time-series-timestamp} or
-        \item the count of the current observation \cref{eq:time-series-count}.
+        \item the set of timestamps \cref{eq:time-series-timestamp} or
+        \item serially numbering of the observations (i.e.\ the set \(\left\{0, 1, \ldots, T-1\right\}\)) \cref{eq:time-series-count}.
     \end{enumerate*}
     \begin{align}
         \text{Timestamp-Indexed TS}&:= \left\{ y^{(t_0)},\ldots, y^{\left(t_{T-1}\right)} \right\}\label{eq:time-series-timestamp}\\
@@ -69,7 +69,7 @@ in this paper.
 \end{definition}
 
 The observation \(o_t\) is then usually related to/influenced by several other
-observations  within the same time series. Most obviously, \(o_t\) is related to
+observations within the same time series. Most obviously, \(o_t\) is related to
 values from its neighborhood (\cref{def:neighborhood}). Furthermore, it might be
 influenced by multiple levels of cyclicity (\cref{def:cyclicity}).
 
@@ -85,19 +85,19 @@ influenced by multiple levels of cyclicity (\cref{def:cyclicity}).
 \begin{definition}[Cyclicity]\label{def:cyclicity}
     A time series has some kind of cyclicity if it contains a pattern that repeats
     approximately every \(P\) steps, where \(P\) can be some random variable. In
-    simple terms the time series TS is said to be (additively-constant) cyclic
-    if \(\text{TS}(i + P) \approx \text{TS}(i) + C,\ C\in \mathbb{R}\). This
-    definition could easily be extended to more complex cyclic patterns. For
-    detailed examination see~\cite{Falk.2012}.
+    simple terms, the time series TS is said to be (additively-constant) cyclic
+    if \(\text{TS}(i + P) \approx \text{TS}(i) + e,\ e\in \mathbb{R}\), where \(e\)
+    is some error. This definition could easily be extended to more complex cyclic
+    patterns. For detailed examination see~\cite{Falk.2012}.
 \end{definition}
 
 \subsection{What are we trying to retrieve?}
 Breakages can manifest visually in different forms. Common forms are
 \begin{enumerate}
-    \item\label{itm:1} a drop/peak significantly below/above previously observed values,
-    \item\label{itm:2} a drop/peak below/above typical values of the neighborhood
-    \item\label{itm:3} a drop/peak below/above its expected cyclic dependencies,
-    \item\label{itm:4} a change point (lasting violation (/ introduction) of a (new) cyclic pattern).
+    \item\label{itm:1} a drop/peak significantly below/above \textit{all} previously observed values,
+    \item\label{itm:2} a drop/peak below/above values from the neighborhood,
+    \item\label{itm:3} a drop/peak below/above expected cyclic dependencies,
+    \item\label{itm:4} a change point (adjustment of an existing or introduction of a new cyclic pattern).
 \end{enumerate}
 An influential taxonomy of such breakages has been introduced by \textcite{Chandola.2009}
 as follows:
@@ -111,7 +111,7 @@ as follows:
 
 \begin{definition}[Contextual Anomaly]\label{def:contextual-anomaly}
     Contextual Anomalies are \textbf{singular} observations which do not deviate
-    strongly from the general distribution but only from its neighborhood or
+    strongly from the general distribution but only from their neighborhood or
     cyclic dependencies~\cite[cf.][]{Chandola.2009}. This comprises common breakage
     forms \labelcref{itm:2,itm:3}. A visualization is given in
     \cref{fig:contextual-anomaly}.
@@ -142,7 +142,7 @@ as follows:
         \includegraphics[width=\textwidth]{collective_anomaly_LevcorrTempfaultseed199vars23.RT_level.jpg}
         \subcaption{Collective anomalies from Gasoil-Dataset~\cite{Filonov.2016}: 48\_Lev\_corr\_Temp\_fault\_seed\_199\_vars\_23[``RT\_level''].}\label{fig:collective-anomaly}
     \end{subfigure}
-    \caption{Examples of the three anomaly types~\cite{Chandola.2009} from different datasets. Illustrations by the author.}\label{fig:anomaly-types}
+    \caption[Examples of the three anomaly types]{Examples of the three anomaly types~\cite{Chandola.2009} from different datasets. Illustrations by the author.}\label{fig:anomaly-types}
 \end{figure}
 
 All common breakage forms are included in one of the three anomaly definitions.
@@ -171,8 +171,8 @@ Boundary-based:
         For details confer~\cite{Zietlow.2020}.\label{forecasting-phase-b}
     \end{enumerate}
     Phase~\ref{forecasting-phase-b} is not part of most forecasting algorithms.
-    And has therefore been implemented by the author. \acrfull{ndt}
-    by \textcite{Hundman.2018} was able to outperform other approaches and was
+    It has therefore been implemented by the author. \acrfull{ndt} by
+    \textcite{Hundman.2018} was able to outperform other approaches and was
     therefore used throughout this paper. For details see \cref{sec:forecasting-eval}.
 \end{definition}
 
@@ -183,6 +183,6 @@ Boundary-based:
 \end{definition}
 
 \begin{definition}[Detection]\label{def:detection}
-    An observation that is deemed anomalous by the algorithm is also called a
-    \text{detection}.
+    An observation that is deemed anomalous by the algorithm is called a
+    \textit{detection}.
 \end{definition}

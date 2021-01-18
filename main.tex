@@ -15,10 +15,6 @@
 \setmainlanguage[variant=british]{english}
 \setotherlanguage[babelshorthands=true]{german}
 
-% Citation, Verweise
-\input{preamble/references-and-citation.tex}
-\addbibresource{BibLaTex/citation.bib}
-
 % Fonts
 \input{preamble/fonts-and-symbols.tex}
 
@@ -42,17 +38,13 @@
 \usepackage{blindtext}          % I like it better than lorem ipsum
 \usepackage{kantlipsum}         % 20% cooler than blindtext
 
-\usepackage[textwidth=15mm]{todonotes} % Insert von Todos - [disable]
+\usepackage[disable,textwidth=15mm]{todonotes} % Insert von Todos - [disable]
+\input{preamble/references-and-citation.tex}
 \setlength{\marginparwidth}{20mm} % For todonotes
 \usepackage{hyperref}           % Verlinkungen im Dokument
 \usepackage[nameinlink]{cleveref}
-\crefformat{footnote}{#2\footnotemark[#1]#3}
-\hypersetup{
- colorlinks,
- linkcolor={red!45!black},
- citecolor={blue!50!black},
- urlcolor={blue!80!black}
-}
+% Citation, Verweise
+\addbibresource{BibLaTex/citation.bib}
 
 
 %%%% <Workarounds> %%%%

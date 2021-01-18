@@ -1,13 +1,17 @@
 \section{Experimental Setup}\label{sect:experimental-setup}
-\todo{write}
+In this section, details on the dataset \cref{subsect:datasets} and the selection
+of algorithms \cref{subsect:algorithm-overview} are given.
 
 \subsection{Datasets}\label{subsect:datasets}
 The algorithms evaluated in this paper are compared on a variety of synthetic
 and real-world univariate time series, taken from the \gls{nab}-collection.
-In this section the dataset will be described in detail. While the \gls{nab}
-dataset was chosen for this paper, a selection of additional univariate datasets
-is given in \cref{tab:univariate-datasets}. Additional multivariate datasets are
-given in \cref{tab:multivariate-datasets}.
+While the \gls{nab} datasets were chosen for this paper, a selection of additional
+univariate datasets is given in \cref{tab:univariate-datasets}.
+Additional multivariate datasets are given in \cref{tab:multivariate-datasets}.
+
+In this subsection, the recent controversy surrounding several anomaly detection datasets
+will be discussed. Further, \gls{nab} and its metric will be introduced, also a
+short visual examination is performed.
 
 \subsubsection{Controversy}
 Recent research inspired by~\cite{Nakamura.2020} has raised doubts about the
@@ -16,7 +20,7 @@ included are Yahoo!S5, \gls{nab}, NASA~\cite{Hundman.2018}, and OMNI~\cite{Su.20
 datasets.
 
 It is objected that these datasets suffer from one or multiple of the following
-flaws:
+flaws~\cite{Renjie.2020}:
 \begin{description}
     \item[Triviality] A dataset is considered trivial if it can be \textit{solved}
     by a simple combination of statistical operations such as \textit{mean},
@@ -47,7 +51,7 @@ flaws:
     any false negatives or false positives.
 
     Examples that demonstrate this flaw are taken mainly from Yahoo!S5. A single
-    time series from \gls{nab} is given examined.
+    time series from \gls{nab} is given.
 
     \item[Run-to-failure Bias] A dataset suffers from the run-to-failure bias if
     anomalies appear only towards its end without normal observations following
@@ -56,29 +60,28 @@ flaws:
     Examples that demonstrate this flaw are taken from Yahoo!S5 and NASA\@.
 \end{description}
 
-In summary, the majority of flaws are to be found in Yahoo!S5 and NASA datasets.
-While the authors choose not to provide evidence for the triviality of \gls{nab},
-the most important lesson from their work applies here as well:
+In summary, the majority of flaws are to be found within Yahoo!S5 and NASA datasets.
+From~\cite{Renjie.2020} it can be concluded that
 \textbf{Anomaly detection is a visual domain and researchers are responsible for
 providing not just scores, but visual examination of their results.}
+While the authors do not to provide evidence for the triviality of \gls{nab},
+this conclusion holds here as well.
 
-Besides, \textcite{Renjie.2020} mention the creation of a novel benchmark dataset,
-but its release is still delayed. 
-
-
+As a side note, \textcite{Renjie.2020} mention the creation of a novel benchmark
+dataset. Unfortunately, its release is still delayed.
 
 \subsubsection{Numenta Anomaly Benchmark}
-The \acrfull{nab} was created as a compilation of 11 synthetic and 47 real
+The \acrfull{nab} was created as a compilation of 11 synthetic and 47 real,
 domain specific time series. Of the 11 synthetic time series, 5 do not contain
-anomalous values. Every time series consists of both a timestamp and a single
-numeric value (see \defref{def:observation}) and contains between 1000--22.000 such
+anomalous values. The time series consist of both a timestamp and a single
+numeric value (see \defref{def:observation}) and contain between 1000--22.000 such
 observations. The complete benchmark contains a total of 365.551 observations~\cite{Lavin.2015}.
 
 The time series (except for the \textit{realKnownCause}-subset) were labeled
 according to a unified procedure~\cite{Numenta.2015} by a team of
 multiple researchers. It was released in October 2015, as a reaction to the lack
-of publicly available benchmarks for univariate anomaly detection (although by
-that time the Yahoo!S5 benchmark had already been released).
+of publicly available benchmarks for univariate anomaly detection~\cite{Lavin.2015}
+(although by that time the Yahoo!S5 benchmark had already been released).
 
 The upcoming paragraph describes the scoring function introduced with \gls{nab}.
 This is followed (in vein of~\cite{Renjie.2020}) by a short visual examination
@@ -100,7 +103,7 @@ The metric is defined using \textit{anomaly windows}.
     \begin{figure}[htp!]
         \centering
         \includegraphics[width=.6\textwidth]{anomaly_windows.png}
-        \caption{Example of an \defref{def:anomaly-window}. Illustration
+        \caption[Example of an \defref{def:anomaly-window}.]{Example of an \defref{def:anomaly-window}. Illustration
         by the author.}\label{fig:anomaly-window}
     \end{figure}
 \end{definition}
@@ -109,12 +112,12 @@ Additional detections within the window are ignored~\cite[cf.][]{Lavin.2015}.
 Detections earlier in the window give higher positive scores than later detections.
 Detections outside the anomaly window give negative scores.
 
-Details on the calculation of the scoring function are given in \cref{app:numenta-score}
+Details on calculation of the scoring function are given in \cref{app:numenta-score}
 and an exemplary application is depicted in \cref{fig:anomaly-score-example}.
 
 
 \paragraph{Visual Examination}
-In this paragraph, an overview of the most common anomaly types within the \gls{nab}
+In this paragraph, an overview of the most common anomaly types within \gls{nab}
 is given. From visual observation only, the vast majority (about 30) of time
 series from the dataset contain point anomalies~\cref{fig:point-anomalies-nab}.
 Other more common types include contextual anomalies \cref{fig:contextual-anomalies-nab}.
@@ -130,8 +133,8 @@ This implies triviality of the dataset. However, such trivial solution would
 also detect many false positives. While, from short examination, it appears possible
 to solve many of the time series presented in \gls{nab} with comparatively simple
 statistical operations, such a solution would probably require a unique set of such
-operations for every time series. Thereby defeating the purpose of \gls{nab} of
-scoring a unified algorithm that must \textit{not} be adjusted for every such
+operations for every time series. Thereby defeating the purpose of \gls{nab}:
+scoring unified algorithms that must \textit{not} be adjusted for every such
 time series.
 
 Additional plots from the dataset can be found in \cref{sect:additonal-plots-dataset}.
@@ -146,7 +149,7 @@ Additional plots from the dataset can be found in \cref{sect:additonal-plots-dat
         \centering
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/ec2_request_latency_system_failure.png}
     \end{subfigure}
-    \caption{Two examples of Point Anomalies}\label{fig:point-anomalies-nab}
+    \caption[Two examples of Point Anomalies.]{Two examples of Point Anomalies. Illustrations by the author.}\label{fig:point-anomalies-nab}
 \end{figure}
 
 \begin{figure}[htp!]
@@ -159,7 +162,7 @@ Additional plots from the dataset can be found in \cref{sect:additonal-plots-dat
         \centering
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/art_daily_nojump.png}
     \end{subfigure}
-    \caption{Two examples of (artificial) cyclicity violations (contextual anomalies)}\label{fig:contextual-anomalies-nab}
+    \caption[Two examples of (artificial) cyclicity violations (contextual anomalies).]{Two examples of (artificial) cyclicity violations (contextual anomalies). Illustrations by the author.}\label{fig:contextual-anomalies-nab}
 \end{figure}
 
 \begin{figure}[htp!]
@@ -168,14 +171,14 @@ Additional plots from the dataset can be found in \cref{sect:additonal-plots-dat
         \centering
         \includegraphics[width=\textwidth]{anomaly_types_examples/final/png/grok_asg_anomaly.png}
     \end{subfigure}
-    \caption{An example of two change points (collective anomalies) and a point anomaly}\label{fig:collective-anomalies-nab}
-\end{figure}\todo{Is clearpage still required?}
+    \caption[An example of two change points (collective anomalies)]{An example of two change points (collective anomalies) and a point anomaly. Illustrations by the author.}\label{fig:collective-anomalies-nab}
+\end{figure}
 \clearpage
 
-\subsection{Algorithm overview}
+\subsection{Algorithm overview}\label{subsect:algorithm-overview}
 In an attempt to reduce the implementation complexity required for this paper,
 the majority of algorithms has been adopted from open source libraries and
-adjusted slightly for application to the \gls{nab} dataset.\footnote{Customization most notably
+adjusted slightly for application to the \gls{nab}-dataset.\footnote{Customization most notably
 included the partition of time series into multiple subsets that were alternatingly
 used for training and inference.} On GitHub, several repositories can be found
 which curate lists of such libraries. All repositories used for this process are
@@ -183,8 +186,8 @@ listed in \cref{tab:curation-lists}.
 
 From these repositories, all libraries that offer algorithms belonging to either
 \invdefref{def:forecasting-based-algo} or \invdefref{def:boundary-based-algo}
-are listed in the appendix (forecasting-based: \cref{def:forecasting-based-algo},
-boundary-based: \cref{tab:ad-packages}). Both tables contain three columns:
+are listed in the appendix (forecasting-based: \cref{tab:forecasting-packages},
+boundary-based: \cref{tab:boundary-packages}). Both tables contain three columns:
 an (almost exhaustive) list of models offered by the library, the latest
 released version, and the date of the latest commit.
 

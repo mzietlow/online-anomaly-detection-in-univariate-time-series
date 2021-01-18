@@ -43,3 +43,16 @@
 {"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Qparagraph.4.-..001.\\E$"}
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qlong-short\\E$"}
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qlong-short\\E$"}
+{"rule":"A_INFINITIVE","sentence":"^\\QWhile the nab dataset was chosen for this paper, a selection of additional univariate datasets is given in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5, nab, NASA \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, and OMNI \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q datasets.\\E$"}
+{"rule":"ENGLISH_WORD_REPEAT_BEGINNING_RULE","sentence":"^\\QFor nab, the authors claim that most time series are trivial, but omit evidence by giving only a single example.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5 and NASA datasets.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5 and NASA.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5 dataset for which also a code listing of a brute force approach is provided.\\E$"}
+{"rule":"A_INFINITIVE","sentence":"^\\QThe nab was created as a compilation of 11 synthetic and 47 real domain specific time series.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QS5 benchmark had already been released).\\E$"}
+{"rule":"IN_VEIN","sentence":"^\\QThis is followed (in vein of \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q) by a short visual examination of the dataset.\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QWindow length is defined per time series as: \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Qlen \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Qtime series \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Qnumber of anomalies \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Qtime series Example of an def:anomaly-window.\\E$"}
+{"rule":"A_INFINITIVE","sentence":"^\\QThe nab was created as a compilation of 11 synthetic and 47 real, domain specific time series.\\E$"}
+{"rule":"A_INFINITIVE","sentence":"^\\QWhile the nab datasets were chosen for this paper, a selection of additional univariate datasets is given in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
