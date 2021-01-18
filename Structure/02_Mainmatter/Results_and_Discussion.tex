@@ -1,16 +1,17 @@
 \section{Results and Discussion}\label{sect:results-and-discussion}
 In this section we will examine the results accomplished by every algorithm
 (\cref{subsect:brief-algo-discussion}) and close with a summary and discussion
-(\cref{subsect:discussion}). The final metrics are presented in two tables:
-\cref{tab:chosen-forecasting-algo,tab:chosen-boundary-algo}.
+(\cref{subsect:discussion}). The final metrics are presented in \cref{tab:results}.
 
-\subsection{Brief discussion of every algorithm}\label{subsect:brief-algo-discussion}
+\subsection{Brief discussion of result per algorithm}\label{subsect:brief-algo-discussion}
+In this subsection, the results from every algorithm are briefly discussed.
+
 \bigskip
 {\large\uline{\textbf{Inapplicable Algorithms}}}\\
 An algorithm is considered inapplicable, if it produces results that are hardly
 usable for anomaly detection.
 \begin{description}[style=unboxed,leftmargin=0cm]
-    \item[TBAT/S] TBAT/S suffered from frequent crashes due to numerical instabilities.
+    \item[TBAT/S] suffered from frequent crashes due to numerical instabilities.
     In conjunction with its long runtime and subpar performance it was sorted out.
     \item[OCSVM] \gls{ocsvm}s output is predominantly noisy. In \cref{fig:ocsvm-output},
     two examples (out of many) are shown, in which \gls{ocsvm} was unable to extract
@@ -44,24 +45,25 @@ usable for anomaly detection.
     of training iterations were able to alleviate the problem. An interesting
     exception from this are change points, where predictions slowly adapt to the
     new mean of observations (see \cref{fig:deepant-changepoint}).
-    \item[NBEATS] Other than DeepAnT, NBEATS seem unable to infer cyclicity from
-    the data (see \cref{fig:nbeats-cyclicity}). For more complex time series,
-    NBEATS' error-terms also resemble\cref{foot:err-reconstructs} the original
-    time series data (see \cref{fig:nbeats-resembles}). Interestingly, value
-    spikes are followed by a short decrease in prediction accuracy
+    \item[N-BEATS] Whether N-BEATS is able to infer cyclicity depends on the type
+    of layers chosen~\cite[cf.][]{Oreshkin.2020}. From experiments, generic layers
+    were chosen, which are (in general) unable to infer cyclicity (see \cref{fig:nbeats-cyclicity}).
+    For more complex time series, N-BEATS' error-terms also resemble\cref{foot:err-reconstructs}
+    the original time series data (see \cref{fig:nbeats-resembles}). Interestingly,
+    value spikes are followed by a short decrease in prediction accuracy
     (see \cref{fig:nbeats-spike-impact}). The output is therefore often more
-    chaotic than that of DeepAnT. While it may seem counterintuitive that NBEATS
-    achieves higher scores than DeepAnT. This is related to three conditions:
+    chaotic than that of DeepAnT. While it may seem counterintuitive that N-BEATS
+    achieves higher scores than DeepAnT, this is related to three conditions:
     \begin{enumerate*}[a.)]
         \item as noted, value spikes cause more chaotic outputs,
-        \item many anomalies for the \gls{nab} are point anomalies with high value spikes, and
-        \item \gls{ndt}~\cite[cf.][]{Hundman.2018} (used in phase b.) of
+        \item many anomalies within \gls{nab} are point anomalies with high value spikes, and
+        \item \gls{ndt}~\cite[cf.][]{Hundman.2018} (used in phase b.\ of
         forecasting algorithms, see \cref{def:forecasting-based-algo}) is sensitive
         to relative changes in mean and standard deviation.
     \end{enumerate*}
     
     We therefore observe more detections in total which are also more likely to
-    be true positives, because the \gls{nab} contains many such anomalies.
+    be true positives, because \gls{nab} contains many such anomalies.
 
     Unfortunately, this comes at the cost of increasing the number of false positives
     significantly.
@@ -70,7 +72,7 @@ usable for anomaly detection.
     often included some trend that was not to be found within the actual data (see
     \cref{fig:hw-trend-instability}). As Holt-Winters was adopted from AtsPy,
     it is possible that numerical instabilities resulted from an issue within the library.
-    \item[Auto-ARIMA] Like DeepAnT, Auto-ARIMA is unable to detect long-term
+    \item[Auto-ARIMA] Like N-BEATS\@, Auto-ARIMA is unable to detect long-term
     cyclicity (see \cref{fig:arima-cyclicity}), also resulting in high number of
     false positive on time series with many spikes (see \cref{fig:arima-fp}).
     This might be improved by adding a seasonal component to ARIMA~\cite[cf.][]{Box.2016}.
@@ -96,13 +98,13 @@ usable for anomaly detection.
     the original time series --- yet with a quirk: Prophet assumed seasonality within
     the data where seasonality was absent. This resulted in a curvy output
     (see \cref{fig:prophet-curvy}). Besides that, Prophet was able to understand
-    cyclicity in \textit{simple} time series (see \cref{fig:prophet-cyclicity}).
+    cyclicity in \textit{simple} time series very well (see \cref{fig:prophet-cyclicity}).
 \end{description}
 \bigskip
 {\large\uline{\textbf{Boundary Algorithms}}}\\
 \begin{description}[style=unboxed,leftmargin=0cm]
     \item[Nonparametric Dynamic Thresholding~\cite{Hundman.2018}] Although not
-    considered as a stand-alone method at the beginning, \gls{ndt} proved to be
+    considered as a stand-alone method from the beginning, \gls{ndt} proved to be
     very effective at extracting anomalies from forecasting algorithms.
     
     As often observed in this section, the output of most forecasting algorithms
@@ -112,23 +114,23 @@ usable for anomaly detection.
     
     \gls{ndt} tries to detect values in a dataset that cause the greatest change
     in mean and standard deviation when they are removed. In theory, it should
-    therefore be able to identify regions not only with a high/low value but also
+    therefore be able to identify regions not only with a high/low max/min but also
     with unusually high/low mean. From visual evaluation, \gls{ndt} reacts most
     strongly to value spikes. In some time series, this leads to a high number
     of false positives (see \cref{fig:khundman-fp}). Unfortunately, the dataset
-    yields not a single anomaly that is detected by \gls{ndt} due to its unusual
-    mean.
+    yields not a single anomaly that is detected by \gls{ndt} obviously due to
+    its unusual mean.
     \item[LSTM-AD] Like most algorithms discussed so far, LSTM-AD is vulnerable
     to time series that produce high value spikes and then jump back to approximately
     zero (see \cref{fig:lstmad-fp}). It can be observed that LSTM-AD is unable to detect
     cyclicity violations (see \cref{fig:lstmad-cyclicity}). Besides that, all
     detections from LSTM-AD are closely related to some spiking change in
     value.
-    \item[CBLOF] \gls{cblof}s results are surprisingly good. It was able to adapt
-    to most regularly spiking time series (see \cref{fig:cblof-cyclicity}), albeit having trouble
-    with \textit{ir}regularly spiking time series (see \cref{fig:cblof-fp}). Most of the
-    time however, good results are achieved (see e.g.\ \cref{fig:cblof-good}).
-    \item[kNN] was slightly more robust to spike-anomalies, producing
+    \item[CBLOF] From visual examination, \gls{cblof}s results are surprisingly
+    good. It was able to adapt to most regularly spiking time series (see \cref{fig:cblof-cyclicity}),
+    albeit having trouble with \textit{ir}regularly spiking time series (see \cref{fig:cblof-fp}).
+    Most of the time however, good results are achieved (see e.g.\ \cref{fig:cblof-good}).
+    \item[kNN] was slightly more robust to value spikes, producing
     less false positives but also less true positives (see \cref{fig:spike-missed}).
     Although \gls{knn} has no notion of time, it was able to detect several
     (simple) cyclicity violations (see \cref{fig:knn-cyclicity}). Presumably,
@@ -137,7 +139,7 @@ usable for anomaly detection.
     \item[Threshold Detector] The threshold detector was originally a \textbf{cheat}
     within the \gls{htm}-code\footnote{\raggedright\url{https://github.com/numenta/NAB/blob/757b586b35a939645dd92f6f7c1b126ebb3614f7/nab/detectors/numenta/numenta_detector.py}}
     by Numenta~\cite{Lavin.2015,Ahmad.2017}. It exploits the many point anomalies
-    (spiking values) within the \gls{nab} to achieve higher scores.
+    (spiking values) within \gls{nab} to achieve higher scores.
     
     The detector works by remembering both the highest/lowest observed values. If a
     new point with higher/lower value is observed (and it is larger/smaller by some
@@ -147,8 +149,8 @@ usable for anomaly detection.
     \cref{tab:results}) due to its very low false positive rate. Representative
     examples are given in \cref{fig:threshold-output}.
     \item[LSTM-ED] From visual examination, results look very similar to those
-    achieved from \gls{cblof}. LSTM-ED suffers similarly from irregularly spiking
-    datasets (see \cref{fig:lstmed-fp}). LSTM-ED is able to improve upon \gls{cblof}
+    achieved from \gls{cblof}. LSTM-ED suffers similarly from irregular spike values
+     (see \cref{fig:lstmed-fp}). LSTM-ED is able to improve upon \gls{cblof}
     by detecting some of the more intricate anomalies (see \cref{fig:lstmed-harder}).
     The higher number of false positives from LSTM-ED can be linked to the set of
     artificial time series data in \gls{nab} that does not contain any anomalies.
@@ -157,19 +159,20 @@ usable for anomaly detection.
     The two algorithms differed only on about three of the 58 time series
     (see \cref{fig:lstm-vs-ae}).
     \item[Skyline] Skyline was unable to detect cyclicity dropouts (see \cref{fig:skyline-cyclicity}).
-    It is robust to frequently spiking domains, as long as the spikes are so common,
+    It is robust to frequently spike values, as long as the spikes are so common,
     that they are within a \(\mu_t + 3 \times \sigma_t\), where \(\mu_t, \sigma_t\)
     are the moving mean and the moving standard deviation respectively.
     If observations deviate more (however regular that may be), a detection is recorded.
     This produced a significant number of false positives in some domains (see \cref{fig:skyline-fp}).
-    \item[Numenta HTM] was able to score highest out of all algorithms,
-    and slightly higher than Skyline because it produced less false positives. In simple
-    time series, \gls{htm} was able to detect very simple cyclicity violations
-    (see \cref{fig:htm-cyclicity,fig:htm-cyclicity2}). Also, \gls{htm} was more
-    sensitive to small deviations than most competitors, enabling it to detect
-    more subtle (see \cref{fig:htm-subtle}) anomalies, but also producing a larger number of false positives.
-    The algorithm was not robust to datasets where spikes were strong but regular
-    (see \cref{fig:htm-spikes}).
+    \item[Numenta HTM\footnote{\gls{htm} was implemented without the Threshold Detector cheat by Numenta.}]
+    was able to score highest out of all algorithms, and slightly higher than
+    Skyline, because it produced less false positives. In simple time series,
+    \gls{htm} was able to detect very simple cyclicity violations (see
+    \cref{fig:htm-cyclicity,fig:htm-cyclicity2}). Also, \gls{htm} was more sensitive
+    to small deviations than most competitors, enabling it to detect more subtle
+    (see \cref{fig:htm-subtle}) anomalies, but also producing a slightly larger
+    number of false positives. The algorithm was not robust to datasets where
+    spikes were strong but regular (see \cref{fig:htm-spikes}).
 \end{description}
 
 % Chosen Library Anomaly Detection & Forecasting
@@ -207,5 +210,47 @@ usable for anomaly detection.
     and false negatives respectively.}\label{tab:results}
 \end{table}
 
-
 \subsection{Discussion}\label{subsect:discussion}
+Visual evaluation of algorithms on \gls{nab} has proven harder than expected,
+because
+\begin{enumerate}[a.)]
+    \item the dataset comprises mainly point anomalies,
+    \item most time series are of very similar shape,
+    \item few time series contain easily digestible cyclicity,
+    \item many time series contain too few examples of their cyclicity for it to be learnt,
+    \item anomalies are sometimes very similar to normal data,
+    \item the dataset was not compiled to \textit{answer such questions}.
+\end{enumerate}
+While \textcite{Renjie.2020} are currently constructing a supposedly better
+benchmark dataset, it remains to be seen, whether it will improve visual
+interpretability and comparability of approaches. The examples currently available~\cite{Renjie.2021}
+unfortunately do not suggest that, coming mostly from very steady biological processes,
+characterized by strong spikes and no long term cyclicities.
+
+As a consequence, drawing a clear conclusion and giving advices when to use
+which algorithm is difficult.
+
+Based on the observations above (\cref{subsect:brief-algo-discussion}), we conclude
+for forecasting methods:
+\begin{enumerate}
+    \item Forecasting methods (DeepAnT, Prophet) perform good on simple time series
+    with obvious cyclicities, where they are able to infer dropouts. (\cref{fig:deepant-cyclicity,fig:prophet-cyclicity})
+    \item Forecasting methods break down on more complex time series, where their
+    error terms only approximate the original time series --- often with additionally
+    introduced noise, significantly increasing their false positive rate. (\cref{fig:deepant-resemble,fig:arima-resembles,fig:prophet-curvy})
+\end{enumerate}
+
+And for boundary methods:
+\begin{enumerate}
+    \item Boundary methods are often unable to detect dropouts, unless they
+    lie within previously unpopulated value ranges (\cref{fig:knn-cyclicity,fig:htm-cyclicity}).
+    \item Boundary methods are often sensitive to point anomalies and sometimes 
+    sensitive to contextual anomalies, unless they depend on cyclicity.
+    \item From all methods \gls{htm} and Skyline were the most sensitive,
+    where \gls{htm} produced 120 false positives less than Skyline.
+    \item LSTM-AD produced the least false positives, however, all true positives
+    were related to value spikes.
+    \item The vulnerability (producing false positives) varies between time series.
+    Even between time series that \textit{look} very similar.
+    \item Most algorithms are vulnerable (producing false positives) to the same time series.
+\end{enumerate}
