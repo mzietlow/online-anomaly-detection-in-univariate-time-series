@@ -98,7 +98,8 @@
 
 %%%% Frontmatter %%%%
 \pagenumbering{gobble} % No page numbering for title and abstract
-\maketitle
+%\maketitle
+\includepdf[pages=1]{figures/front_page.pdf}
 \input{Structure/01_Frontmatter/Abstract.tex}
 \pagenumbering{roman} % Roman page numbering for TOC and lists
 {\hypersetup{hidelinks}
@@ -127,7 +128,9 @@
 \setcounter{page}{\value{roman-pagenumber} + 1} % set page number to counter+1
 {
   \hypersetup{hidelinks}
-  \printbibliography[title={Bibliography}]
+  \begin{sloppypar}
+    \printbibliography[title={Bibliography}]
+  \end{sloppypar}
 }
 \appendix
 \input{Structure/03_Backmatter/Appendices.tex}
